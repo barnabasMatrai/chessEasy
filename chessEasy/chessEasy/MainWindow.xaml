@@ -28,6 +28,38 @@
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
+            <Border Grid.Row="0" Grid.Column="0" Background="Black" />
+            <Border Grid.Row="0" Grid.Column="2" Background="Black" />
+            <Border Grid.Row="0" Grid.Column="4" Background="Black" />
+            <Border Grid.Row="0" Grid.Column="6" Background="Black" />
+            <Border Grid.Row="1" Grid.Column="1" Background="Black" />
+            <Border Grid.Row="1" Grid.Column="3" Background="Black" />
+            <Border Grid.Row="1" Grid.Column="5" Background="Black" />
+            <Border Grid.Row="1" Grid.Column="7" Background="Black" />
+            <Border Grid.Row="2" Grid.Column="0" Background="Black" />
+            <Border Grid.Row="2" Grid.Column="2" Background="Black" />
+            <Border Grid.Row="2" Grid.Column="4" Background="Black" />
+            <Border Grid.Row="2" Grid.Column="6" Background="Black" />
+            <Border Grid.Row="3" Grid.Column="1" Background="Black" />
+            <Border Grid.Row="3" Grid.Column="3" Background="Black" />
+            <Border Grid.Row="3" Grid.Column="5" Background="Black" />
+            <Border Grid.Row="3" Grid.Column="7" Background="Black" />
+            <Border Grid.Row="4" Grid.Column="0" Background="Black" />
+            <Border Grid.Row="4" Grid.Column="2" Background="Black" />
+            <Border Grid.Row="4" Grid.Column="4" Background="Black" />
+            <Border Grid.Row="4" Grid.Column="6" Background="Black" />
+            <Border Grid.Row="5" Grid.Column="1" Background="Black" />
+            <Border Grid.Row="5" Grid.Column="3" Background="Black" />
+            <Border Grid.Row="5" Grid.Column="5" Background="Black" />
+            <Border Grid.Row="5" Grid.Column="7" Background="Black" />
+            <Border Grid.Row="6" Grid.Column="0" Background="Black" />
+            <Border Grid.Row="6" Grid.Column="2" Background="Black" />
+            <Border Grid.Row="6" Grid.Column="4" Background="Black" />
+            <Border Grid.Row="6" Grid.Column="6" Background="Black" />
+            <Border Grid.Row="7" Grid.Column="1" Background="Black" />
+            <Border Grid.Row="7" Grid.Column="3" Background="Black" />
+            <Border Grid.Row="7" Grid.Column="5" Background="Black" />
+            <Border Grid.Row="7" Grid.Column="7" Background="Black" />
         </Grid>
     </Grid>
 </Window>
