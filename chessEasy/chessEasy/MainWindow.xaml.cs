@@ -23,6 +23,7 @@ namespace chessEasy
         public MainWindow()
         {
             InitializeComponent();
+            SetupBoard();
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -33,6 +34,23 @@ namespace chessEasy
             white.G = 255;
             white.B = 255;
             border.Background = new SolidColorBrush(white);
+        }
+
+        private void SetupBoard()
+        {
+            Image chessPiece = CreateChessPiece("black", "queen");
+            Grid.SetRow(chessPiece, 0);
+            Grid.SetColumn(chessPiece, 1);
+            chessBoard.Children.Add(chessPiece);
+        }
+
+        private Image CreateChessPiece(string color, string piece)
+        {
+            Image chessPiece = new Image();
+            ImageSource chessPieceSource = new BitmapImage(new Uri("images/" + color + "-" + piece + ".png", UriKind.Relative));
+            chessPiece.Source = chessPieceSource;
+
+            return chessPiece;
         }
     }
 }
