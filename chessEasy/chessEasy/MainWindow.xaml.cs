@@ -24,5 +24,15 @@ namespace chessEasy
         {
             InitializeComponent();
         }
+
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Border border = e.Source as Border;
+            Color white = new Color();
+            white.R = 255;
+            white.G = 255;
+            white.B = 255;
+            border.Background = new SolidColorBrush(white);
+        }
     }
 }
