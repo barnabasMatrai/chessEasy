@@ -38,10 +38,8 @@ namespace chessEasy
 
         private void SetupBoard()
         {
-            Image chessPiece = CreateChessPiece("black", "queen");
-            Grid.SetRow(chessPiece, 0);
-            Grid.SetColumn(chessPiece, 1);
-            chessBoard.Children.Add(chessPiece);
+            SetupSide("black", 1, 0);
+            SetupSide("white", 6, 7);
         }
 
         private Image CreateChessPiece(string color, string piece)
@@ -51,6 +49,36 @@ namespace chessEasy
             chessPiece.Source = chessPieceSource;
 
             return chessPiece;
+        }
+
+        private void SetupSide(string color, int frontRow, int backRow)
+        {
+            string[] pieces = { "rook", "knight", "bishop", "king", "queen", "bishop", "knight", "rook" };
+
+            SetupRow(color, backRow, pieces);
+            SetupRow(color, frontRow, "pawn");
+        }
+
+        private void SetupRow(string color, int rowNumber, string[] pieces)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                Image chessPiece = CreateChessPiece(color, pieces[i]);
+                Grid.SetRow(chessPiece, rowNumber);
+                Grid.SetColumn(chessPiece, i);
+                chessBoard.Children.Add(chessPiece);
+            }
+        }
+
+        private void SetupRow(string color, int rowNumber, string piece)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                Image chessPiece = CreateChessPiece(color, piece);
+                Grid.SetRow(chessPiece, rowNumber);
+                Grid.SetColumn(chessPiece, i);
+                chessBoard.Children.Add(chessPiece);
+            }
         }
     }
 }
