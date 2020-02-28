@@ -26,29 +26,30 @@ namespace chessEasy
             SetupBoard();
         }
 
-        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Border border = e.Source as Border;
-            Color white = new Color();
-            white.R = 255;
-            white.G = 255;
-            white.B = 255;
-            border.Background = new SolidColorBrush(white);
-        }
-
         private void SetupBoard()
         {
             SetupSide("black", 1, 0);
             SetupSide("white", 6, 7);
         }
 
-        private Image CreateChessPiece(string color, string piece)
+        private Border CreateChessPiece(string color, string piece)
         {
             Image chessPiece = new Image();
             ImageSource chessPieceSource = new BitmapImage(new Uri("images/" + color + "-" + piece + ".png", UriKind.Relative));
             chessPiece.Source = chessPieceSource;
+            chessPiece.MouseDown += ChooseChessPiece;
 
-            return chessPiece;
+            Border border = new Border();
+            border.Child = chessPiece;
+
+            return border;
+        }
+
+        private void ChooseChessPiece(object sender, MouseButtonEventArgs e)
+        {
+            Image image = (Image)sender;
+            Border border = (Border)image.Parent;
+            border.Background = Brushes.Yellow;
         }
 
         private void SetupSide(string color, int frontRow, int backRow)
@@ -63,7 +64,7 @@ namespace chessEasy
         {
             for (int i = 0; i < 8; i++)
             {
-                Image chessPiece = CreateChessPiece(color, pieces[i]);
+                Border chessPiece = CreateChessPiece(color, pieces[i]);
                 Grid.SetRow(chessPiece, rowNumber);
                 Grid.SetColumn(chessPiece, i);
                 chessBoard.Children.Add(chessPiece);
@@ -74,7 +75,7 @@ namespace chessEasy
         {
             for (int i = 0; i < 8; i++)
             {
-                Image chessPiece = CreateChessPiece(color, piece);
+                Border chessPiece = CreateChessPiece(color, piece);
                 Grid.SetRow(chessPiece, rowNumber);
                 Grid.SetColumn(chessPiece, i);
                 chessBoard.Children.Add(chessPiece);
