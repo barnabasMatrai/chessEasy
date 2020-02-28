@@ -49,6 +49,16 @@ namespace chessEasy
         {
             Image image = (Image)sender;
             Border border = (Border)image.Parent;
+            Border highlighted = (Border)FindName("highlighted");
+
+            if (highlighted != null)
+            {
+                highlighted.Background = Brushes.Transparent;
+                UnregisterName(highlighted.Name);
+            }
+
+            border.Name = "highlighted";
+            RegisterName(border.Name, border);
             border.Background = Brushes.Yellow;
         }
 
