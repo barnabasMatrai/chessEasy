@@ -23,7 +23,8 @@ namespace chessEasy
         public MainWindow()
         {
             InitializeComponent();
-            SetupBoard();
+            ColorBoard();
+            //SetupBoard();
         }
 
         private void SetupBoard()
@@ -60,6 +61,50 @@ namespace chessEasy
             border.Name = "highlighted";
             RegisterName(border.Name, border);
             border.Background = Brushes.Yellow;
+        }
+
+        private void ColorBoard()
+        {
+            for (int i = 0; i < 8; i++)
+                for (int j = 0; j < 8; j++)
+                {
+                    Border border = new Border();
+
+                    if (i % 2 == 0)
+                    {
+                        if (j % 2 == 0)
+                        {
+                            border.Background = Brushes.Transparent;
+                            Grid.SetRow(border, i);
+                            Grid.SetColumn(border, j);
+                            chessBoard.Children.Add(border);
+                        }
+                        else
+                        {
+                            border.Background = Brushes.LightGray;
+                            Grid.SetRow(border, i);
+                            Grid.SetColumn(border, j);
+                            chessBoard.Children.Add(border);
+                        }
+                    }
+                    else
+                    {
+                        if (j % 2 == 0)
+                        {
+                            border.Background = Brushes.LightGray;
+                            Grid.SetRow(border, i);
+                            Grid.SetColumn(border, j);
+                            chessBoard.Children.Add(border);
+                        }
+                        else
+                        {
+                            border.Background = Brushes.Transparent;
+                            Grid.SetRow(border, i);
+                            Grid.SetColumn(border, j);
+                            chessBoard.Children.Add(border);
+                        }
+                    }
+                }
         }
 
         private void SetupSide(string color, int frontRow, int backRow)
