@@ -38,15 +38,13 @@ namespace chessEasy
             Image chessPiece = new Image();
             ImageSource chessPieceSource = new BitmapImage(new Uri("images/" + color + "-" + piece + ".png", UriKind.Relative));
             chessPiece.Source = chessPieceSource;
-            chessPiece.MouseDown += ChooseChessPiece;
 
             return chessPiece;
         }
 
         private void ChooseChessPiece(object sender, MouseButtonEventArgs e)
         {
-            Image image = (Image)sender;
-            Border border = (Border)image.Parent;
+            Border border = (Border)sender;
             Border highlighted = (Border)FindName("highlighted");
 
             if (highlighted != null)
@@ -58,6 +56,28 @@ namespace chessEasy
             border.Name = "highlighted";
             RegisterName(border.Name, border);
             border.Background = Brushes.Yellow;
+        }
+
+        private void MoveChessPiece(object sender, MouseButtonEventArgs e)
+        {
+            Border highlighted = (Border)FindName("highlighted");
+            Border stepLocation = (Border)sender;
+
+            if (highlighted != null)
+            {
+                ColorTile(highlighted);
+                UnregisterName(highlighted.Name);
+
+                highlighted.MouseDown -= ChooseChessPiece;
+                highlighted.MouseDown += MoveChessPiece;
+                Image chessPiece = (Image)highlighted.Child;
+
+                highlighted.Child = null;
+                stepLocation.Child = chessPiece;
+
+                stepLocation.MouseDown -= MoveChessPiece;
+                stepLocation.MouseDown += ChooseChessPiece;
+            }
         }
 
         private void ColorTile(Border border)
@@ -95,6 +115,7 @@ namespace chessEasy
                 for (int j = 0; j < 8; j++)
                 {
                     Border border = new Border();
+                    border.MouseDown += MoveChessPiece;
 
                     if (i % 2 == 0)
                     {
@@ -150,6 +171,8 @@ namespace chessEasy
                     .Cast<Border>()
                     .Where(child => Grid.GetRow(child) == rowNumber && Grid.GetColumn(child) == i)
                     .First();
+                border.MouseDown -= MoveChessPiece;
+                border.MouseDown += ChooseChessPiece;
                 border.Child = chessPiece;
             }
         }
@@ -163,6 +186,8 @@ namespace chessEasy
                     .Cast<Border>()
                     .Where(child => Grid.GetRow(child) == rowNumber && Grid.GetColumn(child) == i)
                     .First();
+                border.MouseDown -= MoveChessPiece;
+                border.MouseDown += ChooseChessPiece;
                 border.Child = chessPiece;
             }
         }
