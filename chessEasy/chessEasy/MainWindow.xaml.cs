@@ -56,6 +56,34 @@ namespace chessEasy
             border.Name = "highlighted";
             RegisterName(border.Name, border);
             border.Background = Brushes.Yellow;
+            ShowValidMoves(border);
+        }
+
+        private void ShowValidMoves(Border highlighted)
+        {
+            int rowNumber = Grid.GetRow(highlighted);
+            int columnNumber = Grid.GetColumn(highlighted);
+            Image chessPiece = (Image)highlighted.Child;
+
+            IEnumerable<Border> borders = null;
+
+            if (chessPiece.Source.ToString().Contains("black"))
+            {
+                borders = chessBoard.Children
+                    .Cast<Border>()
+                    .Where(child => Grid.GetColumn(child) == columnNumber && Grid.GetRow(child) <= rowNumber + 2 && Grid.GetRow(child) > rowNumber);
+            }
+            else
+            {
+                borders = chessBoard.Children
+                    .Cast<Border>()
+                    .Where(child => Grid.GetColumn(child) == columnNumber && Grid.GetRow(child) >= rowNumber - 2 && Grid.GetRow(child) < rowNumber);
+            }
+
+            foreach (Border border in borders)
+            {
+                border.Background = Brushes.LightGreen;
+            }
         }
 
         private void MoveChessPiece(object sender, MouseButtonEventArgs e)
