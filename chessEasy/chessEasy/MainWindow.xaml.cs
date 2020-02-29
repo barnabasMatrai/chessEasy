@@ -51,13 +51,42 @@ namespace chessEasy
 
             if (highlighted != null)
             {
-                highlighted.Background = Brushes.Transparent;
+                ColorTile(highlighted);
                 UnregisterName(highlighted.Name);
             }
 
             border.Name = "highlighted";
             RegisterName(border.Name, border);
             border.Background = Brushes.Yellow;
+        }
+
+        private void ColorTile(Border border)
+        {
+            int rowNumber = Grid.GetRow(border);
+            int columnNumber = Grid.GetColumn(border);
+
+            if (rowNumber % 2 == 0)
+            {
+                if (columnNumber % 2 == 0)
+                {
+                    border.Background = Brushes.Transparent;
+                }
+                else
+                {
+                    border.Background = Brushes.LightGray;
+                }
+            }
+            else
+            {
+                if (columnNumber % 2 == 0)
+                {
+                    border.Background = Brushes.LightGray;
+                }
+                else
+                {
+                    border.Background = Brushes.Transparent;
+                }
+            }
         }
 
         private void ColorBoard()
