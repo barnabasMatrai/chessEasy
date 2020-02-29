@@ -24,7 +24,7 @@ namespace chessEasy
         {
             InitializeComponent();
             ColorBoard();
-            //SetupBoard();
+            SetupBoard();
         }
 
         private void SetupBoard()
@@ -33,17 +33,14 @@ namespace chessEasy
             SetupSide("white", 6, 7);
         }
 
-        private Border CreateChessPiece(string color, string piece)
+        private Image CreateChessPiece(string color, string piece)
         {
             Image chessPiece = new Image();
             ImageSource chessPieceSource = new BitmapImage(new Uri("images/" + color + "-" + piece + ".png", UriKind.Relative));
             chessPiece.Source = chessPieceSource;
             chessPiece.MouseDown += ChooseChessPiece;
 
-            Border border = new Border();
-            border.Child = chessPiece;
-
-            return border;
+            return chessPiece;
         }
 
         private void ChooseChessPiece(object sender, MouseButtonEventArgs e)
@@ -119,10 +116,12 @@ namespace chessEasy
         {
             for (int i = 0; i < 8; i++)
             {
-                Border chessPiece = CreateChessPiece(color, pieces[i]);
-                Grid.SetRow(chessPiece, rowNumber);
-                Grid.SetColumn(chessPiece, i);
-                chessBoard.Children.Add(chessPiece);
+                Image chessPiece = CreateChessPiece(color, pieces[i]);
+                Border border = chessBoard.Children
+                    .Cast<Border>()
+                    .Where(child => Grid.GetRow(child) == rowNumber && Grid.GetColumn(child) == i)
+                    .First();
+                border.Child = chessPiece;
             }
         }
 
@@ -130,10 +129,12 @@ namespace chessEasy
         {
             for (int i = 0; i < 8; i++)
             {
-                Border chessPiece = CreateChessPiece(color, piece);
-                Grid.SetRow(chessPiece, rowNumber);
-                Grid.SetColumn(chessPiece, i);
-                chessBoard.Children.Add(chessPiece);
+                Image chessPiece = CreateChessPiece(color, piece);
+                Border border = chessBoard.Children
+                    .Cast<Border>()
+                    .Where(child => Grid.GetRow(child) == rowNumber && Grid.GetColumn(child) == i)
+                    .First();
+                border.Child = chessPiece;
             }
         }
     }
