@@ -88,6 +88,12 @@ namespace chessEasy
                         .Cast<Border>()
                         .Where(child => Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber));
                 }
+                else if (chessPiece.Source.ToString().Contains("queen"))
+                {
+                    borders = chessBoard.Children
+                        .Cast<Border>()
+                        .Where(child => Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber) || Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber);
+                }
             }
             else
             {
@@ -108,6 +114,12 @@ namespace chessEasy
                     borders = chessBoard.Children
                         .Cast<Border>()
                         .Where(child => Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber));
+                }
+                else if (chessPiece.Source.ToString().Contains("queen"))
+                {
+                    borders = chessBoard.Children
+                        .Cast<Border>()
+                        .Where(child => Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber) || Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber);
                 }
             }
 
