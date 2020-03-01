@@ -107,6 +107,15 @@ namespace chessEasy
                         || Grid.GetColumn(child) == columnNumber - 1 && Grid.GetRow(child) == rowNumber + 2
                         || Grid.GetColumn(child) == columnNumber - 1 && Grid.GetRow(child) == rowNumber - 2);
                 }
+                else if (chessPiece.Source.ToString().Contains("king"))
+                {
+                    borders = chessBoard.Children
+                        .Cast<Border>()
+                        .Where(child => Grid.GetColumn(child) < columnNumber + 2
+                        && Grid.GetColumn(child) > columnNumber - 2
+                        && Grid.GetRow(child) < rowNumber + 2
+                        && Grid.GetRow(child) > rowNumber - 2);
+                }
             }
             else
             {
@@ -146,6 +155,15 @@ namespace chessEasy
                         || Grid.GetColumn(child) == columnNumber + 1 && Grid.GetRow(child) == rowNumber - 2
                         || Grid.GetColumn(child) == columnNumber - 1 && Grid.GetRow(child) == rowNumber + 2
                         || Grid.GetColumn(child) == columnNumber - 1 && Grid.GetRow(child) == rowNumber - 2);
+                }
+                else if (chessPiece.Source.ToString().Contains("king"))
+                {
+                    borders = chessBoard.Children
+                        .Cast<Border>()
+                        .Where(child => Grid.GetColumn(child) < columnNumber + 2
+                        && Grid.GetColumn(child) > columnNumber - 2
+                        && Grid.GetRow(child) < rowNumber + 2
+                        && Grid.GetRow(child) > rowNumber - 2);
                 }
             }
 
