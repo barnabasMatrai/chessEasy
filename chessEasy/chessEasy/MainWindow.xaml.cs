@@ -94,6 +94,19 @@ namespace chessEasy
                         .Cast<Border>()
                         .Where(child => Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber) || Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber);
                 }
+                else if (chessPiece.Source.ToString().Contains("knight"))
+                {
+                    borders = chessBoard.Children
+                        .Cast<Border>()
+                        .Where(child => Grid.GetColumn(child) == columnNumber + 2 && Grid.GetRow(child) == rowNumber + 1
+                        || Grid.GetColumn(child) == columnNumber + 2 && Grid.GetRow(child) == rowNumber - 1
+                        || Grid.GetColumn(child) == columnNumber - 2 && Grid.GetRow(child) == rowNumber + 1
+                        || Grid.GetColumn(child) == columnNumber - 2 && Grid.GetRow(child) == rowNumber - 1
+                        || Grid.GetColumn(child) == columnNumber + 1 && Grid.GetRow(child) == rowNumber + 2
+                        || Grid.GetColumn(child) == columnNumber + 1 && Grid.GetRow(child) == rowNumber - 2
+                        || Grid.GetColumn(child) == columnNumber - 1 && Grid.GetRow(child) == rowNumber + 2
+                        || Grid.GetColumn(child) == columnNumber - 1 && Grid.GetRow(child) == rowNumber - 2);
+                }
             }
             else
             {
@@ -120,6 +133,19 @@ namespace chessEasy
                     borders = chessBoard.Children
                         .Cast<Border>()
                         .Where(child => Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber) || Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber);
+                }
+                else if (chessPiece.Source.ToString().Contains("knight"))
+                {
+                    borders = chessBoard.Children
+                        .Cast<Border>()
+                        .Where(child => Grid.GetColumn(child) == columnNumber + 2 && Grid.GetRow(child) == rowNumber + 1
+                        || Grid.GetColumn(child) == columnNumber + 2 && Grid.GetRow(child) == rowNumber - 1
+                        || Grid.GetColumn(child) == columnNumber - 2 && Grid.GetRow(child) == rowNumber + 1
+                        || Grid.GetColumn(child) == columnNumber - 2 && Grid.GetRow(child) == rowNumber - 1
+                        || Grid.GetColumn(child) == columnNumber + 1 && Grid.GetRow(child) == rowNumber + 2
+                        || Grid.GetColumn(child) == columnNumber + 1 && Grid.GetRow(child) == rowNumber - 2
+                        || Grid.GetColumn(child) == columnNumber - 1 && Grid.GetRow(child) == rowNumber + 2
+                        || Grid.GetColumn(child) == columnNumber - 1 && Grid.GetRow(child) == rowNumber - 2);
                 }
             }
 
