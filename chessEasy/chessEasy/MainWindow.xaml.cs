@@ -50,18 +50,20 @@ namespace chessEasy
             if (highlighted != null)
             {
                 ColorTile(highlighted);
+                UnshowValidMoves();
                 UnregisterName(highlighted.Name);
-                UnshowValidMoves(highlighted);
             }
 
             border.Name = "highlighted";
             RegisterName(border.Name, border);
             border.Background = Brushes.Yellow;
-            ShowValidMoves(border);
+            ShowValidMoves();
         }
 
-        private IEnumerable<Border> GetValidMoves(Border highlighted)
+        private IEnumerable<Border> GetValidMoves()
         {
+            Border highlighted = (Border)FindName("highlighted");
+
             int rowNumber = Grid.GetRow(highlighted);
             int columnNumber = Grid.GetColumn(highlighted);
             Image chessPiece = (Image)highlighted.Child;
@@ -170,9 +172,9 @@ namespace chessEasy
             return borders;
         }
 
-        private void ShowValidMoves(Border highlighted)
+        private void ShowValidMoves()
         {
-            IEnumerable<Border> borders = GetValidMoves(highlighted);
+            IEnumerable<Border> borders = GetValidMoves();
 
             if (borders != null)
             {
@@ -183,9 +185,9 @@ namespace chessEasy
             }
         }
 
-        private void UnshowValidMoves(Border highlighted)
+        private void UnshowValidMoves()
         {
-            IEnumerable<Border> borders = GetValidMoves(highlighted);
+            IEnumerable<Border> borders = GetValidMoves();
 
             if (borders != null)
             {
@@ -203,19 +205,28 @@ namespace chessEasy
 
             if (highlighted != null)
             {
-                ColorTile(highlighted);
-                UnregisterName(highlighted.Name);
-                UnshowValidMoves(highlighted);
+                if (stepLocation.Background == Brushes.LightGreen)
+                {
+                    ColorTile(highlighted);
+                    UnshowValidMoves();
+                    UnregisterName(highlighted.Name);
 
-                highlighted.MouseDown -= ChooseChessPiece;
-                highlighted.MouseDown += MoveChessPiece;
-                Image chessPiece = (Image)highlighted.Child;
+                    highlighted.MouseDown -= ChooseChessPiece;
+                    highlighted.MouseDown += MoveChessPiece;
+                    Image chessPiece = (Image)highlighted.Child;
 
-                highlighted.Child = null;
-                stepLocation.Child = chessPiece;
+                    highlighted.Child = null;
+                    stepLocation.Child = chessPiece;
 
-                stepLocation.MouseDown -= MoveChessPiece;
-                stepLocation.MouseDown += ChooseChessPiece;
+                    stepLocation.MouseDown -= MoveChessPiece;
+                    stepLocation.MouseDown += ChooseChessPiece;
+                }
+                else
+                {
+                    ColorTile(highlighted);
+                    UnshowValidMoves();
+                    UnregisterName(highlighted.Name);
+                }
             }
         }
 
