@@ -71,155 +71,86 @@ namespace chessEasy
             IEnumerable<Border> borders = null;
             IEnumerable<Border> obstacles = null;
 
-            if (chessPiece.Source.ToString().Contains("black"))
+            if (chessPiece.Source.ToString().Contains("pawn"))
             {
-                if (chessPiece.Source.ToString().Contains("pawn"))
+                if (chessPiece.Source.ToString().Contains("black"))
                 {
                     borders = chessBoard.Children
                         .Cast<Border>()
                         .Where(child => Grid.GetColumn(child) == columnNumber && Grid.GetRow(child) <= rowNumber + 2 && Grid.GetRow(child) > rowNumber);
                 }
-                else if (chessPiece.Source.ToString().Contains("rook"))
-                {
-                    borders = chessBoard.Children
-                        .Cast<Border>()
-                        .Where(child => child != highlighted && (Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber));
-
-                    obstacles = borders.Where(child => child.Child != null);
-
-                    foreach (Border obstacle in obstacles)
-                    {
-                        int obstacleRow = Grid.GetRow(obstacle);
-                        int obstacleColumn = Grid.GetColumn(obstacle);
-
-                        if (obstacleRow < rowNumber)
-                        {
-                            borders = borders.Where(child => !(Grid.GetRow(child) <= obstacleRow));
-                        }
-                        else if (obstacleRow > rowNumber)
-                        {
-                            borders = borders.Where(child => !(Grid.GetRow(child) >= obstacleRow));
-                        }
-                        else if (obstacleColumn < columnNumber)
-                        {
-                            borders = borders.Where(child => !(Grid.GetColumn(child) <= obstacleColumn));
-                        }
-                        else if (obstacleColumn > columnNumber)
-                        {
-                            borders = borders.Where(child => !(Grid.GetColumn(child) >= obstacleColumn));
-                        }
-                    }
-                }
-                else if (chessPiece.Source.ToString().Contains("bishop"))
-                {
-                    borders = chessBoard.Children
-                        .Cast<Border>()
-                        .Where(child => child != highlighted && Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber));
-                }
-                else if (chessPiece.Source.ToString().Contains("queen"))
-                {
-                    borders = chessBoard.Children
-                        .Cast<Border>()
-                        .Where(child => child != highlighted && (Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber) || Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber));
-                }
-                else if (chessPiece.Source.ToString().Contains("knight"))
-                {
-                    borders = chessBoard.Children
-                        .Cast<Border>()
-                        .Where(child => Grid.GetColumn(child) == columnNumber + 2 && Grid.GetRow(child) == rowNumber + 1
-                        || Grid.GetColumn(child) == columnNumber + 2 && Grid.GetRow(child) == rowNumber - 1
-                        || Grid.GetColumn(child) == columnNumber - 2 && Grid.GetRow(child) == rowNumber + 1
-                        || Grid.GetColumn(child) == columnNumber - 2 && Grid.GetRow(child) == rowNumber - 1
-                        || Grid.GetColumn(child) == columnNumber + 1 && Grid.GetRow(child) == rowNumber + 2
-                        || Grid.GetColumn(child) == columnNumber + 1 && Grid.GetRow(child) == rowNumber - 2
-                        || Grid.GetColumn(child) == columnNumber - 1 && Grid.GetRow(child) == rowNumber + 2
-                        || Grid.GetColumn(child) == columnNumber - 1 && Grid.GetRow(child) == rowNumber - 2);
-                }
-                else if (chessPiece.Source.ToString().Contains("king"))
-                {
-                    borders = chessBoard.Children
-                        .Cast<Border>()
-                        .Where(child => child != highlighted
-                        && Grid.GetColumn(child) < columnNumber + 2
-                        && Grid.GetColumn(child) > columnNumber - 2
-                        && Grid.GetRow(child) < rowNumber + 2
-                        && Grid.GetRow(child) > rowNumber - 2);
-                }
-            }
-            else
-            {
-                if (chessPiece.Source.ToString().Contains("pawn"))
+                else
                 {
                     borders = chessBoard.Children
                         .Cast<Border>()
                         .Where(child => Grid.GetColumn(child) == columnNumber && Grid.GetRow(child) >= rowNumber - 2 && Grid.GetRow(child) < rowNumber);
                 }
-                else if (chessPiece.Source.ToString().Contains("rook"))
+            }
+            else if (chessPiece.Source.ToString().Contains("rook"))
+            {
+                borders = chessBoard.Children
+                    .Cast<Border>()
+                    .Where(child => child != highlighted && (Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber));
+
+                obstacles = borders.Where(child => child.Child != null);
+
+                foreach (Border obstacle in obstacles)
                 {
-                    borders = chessBoard.Children
-                        .Cast<Border>()
-                        .Where(child => child != highlighted && (Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber));
+                    int obstacleRow = Grid.GetRow(obstacle);
+                    int obstacleColumn = Grid.GetColumn(obstacle);
 
-                    obstacles = borders.Where(child => child.Child != null);
-
-                    foreach (Border obstacle in obstacles)
+                    if (obstacleRow < rowNumber)
                     {
-                        int obstacleRow = Grid.GetRow(obstacle);
-                        int obstacleColumn = Grid.GetColumn(obstacle);
-
-                        if (obstacleRow < rowNumber)
-                        {
-                            borders = borders.Where(child => !(Grid.GetRow(child) <= obstacleRow));
-                        }
-                        else if (obstacleRow > rowNumber)
-                        {
-                            borders = borders.Where(child => !(Grid.GetRow(child) >= obstacleRow));
-                        }
-                        else if (obstacleColumn < columnNumber)
-                        {
-                            borders = borders.Where(child => !(Grid.GetColumn(child) <= obstacleColumn));
-                        }
-                        else if (obstacleColumn > columnNumber)
-                        {
-                            borders = borders.Where(child => !(Grid.GetColumn(child) >= obstacleColumn));
-                        }
+                        borders = borders.Where(child => !(Grid.GetRow(child) <= obstacleRow));
+                    }
+                    else if (obstacleRow > rowNumber)
+                    {
+                        borders = borders.Where(child => !(Grid.GetRow(child) >= obstacleRow));
+                    }
+                    else if (obstacleColumn < columnNumber)
+                    {
+                        borders = borders.Where(child => !(Grid.GetColumn(child) <= obstacleColumn));
+                    }
+                    else if (obstacleColumn > columnNumber)
+                    {
+                        borders = borders.Where(child => !(Grid.GetColumn(child) >= obstacleColumn));
                     }
                 }
-                else if (chessPiece.Source.ToString().Contains("bishop"))
-                {
-                    borders = chessBoard.Children
-                        .Cast<Border>()
-                        .Where(child => child != highlighted && Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber));
-                }
-                else if (chessPiece.Source.ToString().Contains("queen"))
-                {
-                    borders = chessBoard.Children
-                        .Cast<Border>()
-                        .Where(child => child != highlighted && (Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber) || Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber));
-                }
-                else if (chessPiece.Source.ToString().Contains("knight"))
-                {
-                    borders = chessBoard.Children
-                        .Cast<Border>()
-                        .Where(child => Grid.GetColumn(child) == columnNumber + 2 && Grid.GetRow(child) == rowNumber + 1
-                        || Grid.GetColumn(child) == columnNumber + 2 && Grid.GetRow(child) == rowNumber - 1
-                        || Grid.GetColumn(child) == columnNumber - 2 && Grid.GetRow(child) == rowNumber + 1
-                        || Grid.GetColumn(child) == columnNumber - 2 && Grid.GetRow(child) == rowNumber - 1
-                        || Grid.GetColumn(child) == columnNumber + 1 && Grid.GetRow(child) == rowNumber + 2
-                        || Grid.GetColumn(child) == columnNumber + 1 && Grid.GetRow(child) == rowNumber - 2
-                        || Grid.GetColumn(child) == columnNumber - 1 && Grid.GetRow(child) == rowNumber + 2
-                        || Grid.GetColumn(child) == columnNumber - 1 && Grid.GetRow(child) == rowNumber - 2);
-                }
-                else if (chessPiece.Source.ToString().Contains("king"))
-                {
-                    borders = chessBoard.Children
-                        .Cast<Border>()
-                        .Where(child => child != highlighted
-                        && Grid.GetColumn(child) < columnNumber + 2
-                        && Grid.GetColumn(child) > columnNumber - 2
-                        && Grid.GetRow(child) < rowNumber + 2
-                        && Grid.GetRow(child) > rowNumber - 2);
-                }
+            }
+            else if (chessPiece.Source.ToString().Contains("bishop"))
+            {
+                borders = chessBoard.Children
+                    .Cast<Border>()
+                    .Where(child => child != highlighted && Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber));
+            }
+            else if (chessPiece.Source.ToString().Contains("queen"))
+            {
+                borders = chessBoard.Children
+                    .Cast<Border>()
+                    .Where(child => child != highlighted && (Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber) || Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber));
+            }
+            else if (chessPiece.Source.ToString().Contains("knight"))
+            {
+                borders = chessBoard.Children
+                    .Cast<Border>()
+                    .Where(child => Grid.GetColumn(child) == columnNumber + 2 && Grid.GetRow(child) == rowNumber + 1
+                    || Grid.GetColumn(child) == columnNumber + 2 && Grid.GetRow(child) == rowNumber - 1
+                    || Grid.GetColumn(child) == columnNumber - 2 && Grid.GetRow(child) == rowNumber + 1
+                    || Grid.GetColumn(child) == columnNumber - 2 && Grid.GetRow(child) == rowNumber - 1
+                    || Grid.GetColumn(child) == columnNumber + 1 && Grid.GetRow(child) == rowNumber + 2
+                    || Grid.GetColumn(child) == columnNumber + 1 && Grid.GetRow(child) == rowNumber - 2
+                    || Grid.GetColumn(child) == columnNumber - 1 && Grid.GetRow(child) == rowNumber + 2
+                    || Grid.GetColumn(child) == columnNumber - 1 && Grid.GetRow(child) == rowNumber - 2);
+            }
+            else if (chessPiece.Source.ToString().Contains("king"))
+            {
+                borders = chessBoard.Children
+                    .Cast<Border>()
+                    .Where(child => child != highlighted
+                    && Grid.GetColumn(child) < columnNumber + 2
+                    && Grid.GetColumn(child) > columnNumber - 2
+                    && Grid.GetRow(child) < rowNumber + 2
+                    && Grid.GetRow(child) > rowNumber - 2);
             }
 
             return borders;
