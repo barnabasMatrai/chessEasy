@@ -69,6 +69,7 @@ namespace chessEasy
             Image chessPiece = (Image)highlighted.Child;
 
             IEnumerable<Border> borders = null;
+            IEnumerable<Border> obstacles = null;
 
             if (chessPiece.Source.ToString().Contains("black"))
             {
@@ -83,6 +84,31 @@ namespace chessEasy
                     borders = chessBoard.Children
                         .Cast<Border>()
                         .Where(child => Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber);
+
+                    obstacles = borders.Where(child => child.Child != null);
+
+                    foreach (Border obstacle in obstacles)
+                    {
+                        int obstacleRow = Grid.GetRow(obstacle);
+                        int obstacleColumn = Grid.GetColumn(obstacle);
+
+                        if (obstacleRow < rowNumber)
+                        {
+                            borders = borders.Where(child => !(Grid.GetRow(child) <= obstacleRow));
+                        }
+                        else if (obstacleRow > rowNumber)
+                        {
+                            borders = borders.Where(child => !(Grid.GetRow(child) >= obstacleRow));
+                        }
+                        else if (obstacleColumn < columnNumber)
+                        {
+                            borders = borders.Where(child => !(Grid.GetColumn(child) <= obstacleColumn));
+                        }
+                        else if (obstacleColumn > columnNumber)
+                        {
+                            borders = borders.Where(child => !(Grid.GetColumn(child) >= obstacleColumn));
+                        }
+                    }
                 }
                 else if (chessPiece.Source.ToString().Contains("bishop"))
                 {
@@ -132,6 +158,31 @@ namespace chessEasy
                     borders = chessBoard.Children
                         .Cast<Border>()
                         .Where(child => Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber);
+
+                    obstacles = borders.Where(child => child.Child != null);
+
+                    foreach (Border obstacle in obstacles)
+                    {
+                        int obstacleRow = Grid.GetRow(obstacle);
+                        int obstacleColumn = Grid.GetColumn(obstacle);
+
+                        if (obstacleRow < rowNumber)
+                        {
+                            borders = borders.Where(child => !(Grid.GetRow(child) <= obstacleRow));
+                        }
+                        else if (obstacleRow > rowNumber)
+                        {
+                            borders = borders.Where(child => !(Grid.GetRow(child) >= obstacleRow));
+                        }
+                        else if (obstacleColumn < columnNumber)
+                        {
+                            borders = borders.Where(child => !(Grid.GetColumn(child) <= obstacleColumn));
+                        }
+                        else if (obstacleColumn > columnNumber)
+                        {
+                            borders = borders.Where(child => !(Grid.GetColumn(child) >= obstacleColumn));
+                        }
+                    }
                 }
                 else if (chessPiece.Source.ToString().Contains("bishop"))
                 {
