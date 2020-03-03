@@ -83,7 +83,7 @@ namespace chessEasy
                 {
                     borders = chessBoard.Children
                         .Cast<Border>()
-                        .Where(child => Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber);
+                        .Where(child => child != highlighted && (Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber));
 
                     obstacles = borders.Where(child => child.Child != null);
 
@@ -114,13 +114,13 @@ namespace chessEasy
                 {
                     borders = chessBoard.Children
                         .Cast<Border>()
-                        .Where(child => Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber));
+                        .Where(child => child != highlighted && Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber));
                 }
                 else if (chessPiece.Source.ToString().Contains("queen"))
                 {
                     borders = chessBoard.Children
                         .Cast<Border>()
-                        .Where(child => Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber) || Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber);
+                        .Where(child => child != highlighted && (Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber) || Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber));
                 }
                 else if (chessPiece.Source.ToString().Contains("knight"))
                 {
@@ -139,7 +139,8 @@ namespace chessEasy
                 {
                     borders = chessBoard.Children
                         .Cast<Border>()
-                        .Where(child => Grid.GetColumn(child) < columnNumber + 2
+                        .Where(child => child != highlighted
+                        && Grid.GetColumn(child) < columnNumber + 2
                         && Grid.GetColumn(child) > columnNumber - 2
                         && Grid.GetRow(child) < rowNumber + 2
                         && Grid.GetRow(child) > rowNumber - 2);
@@ -157,7 +158,7 @@ namespace chessEasy
                 {
                     borders = chessBoard.Children
                         .Cast<Border>()
-                        .Where(child => Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber);
+                        .Where(child => child != highlighted && (Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber));
 
                     obstacles = borders.Where(child => child.Child != null);
 
@@ -188,13 +189,13 @@ namespace chessEasy
                 {
                     borders = chessBoard.Children
                         .Cast<Border>()
-                        .Where(child => Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber));
+                        .Where(child => child != highlighted && Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber));
                 }
                 else if (chessPiece.Source.ToString().Contains("queen"))
                 {
                     borders = chessBoard.Children
                         .Cast<Border>()
-                        .Where(child => Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber) || Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber);
+                        .Where(child => child != highlighted && (Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber) || Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber));
                 }
                 else if (chessPiece.Source.ToString().Contains("knight"))
                 {
@@ -213,7 +214,8 @@ namespace chessEasy
                 {
                     borders = chessBoard.Children
                         .Cast<Border>()
-                        .Where(child => Grid.GetColumn(child) < columnNumber + 2
+                        .Where(child => child != highlighted
+                        && Grid.GetColumn(child) < columnNumber + 2
                         && Grid.GetColumn(child) > columnNumber - 2
                         && Grid.GetRow(child) < rowNumber + 2
                         && Grid.GetRow(child) > rowNumber - 2);
