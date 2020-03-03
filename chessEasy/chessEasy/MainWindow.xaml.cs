@@ -92,30 +92,7 @@ namespace chessEasy
                     .Cast<Border>()
                     .Where(child => child != highlighted && (Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber));
 
-                obstacles = borders.Where(child => child.Child != null);
-
-                foreach (Border obstacle in obstacles)
-                {
-                    int obstacleRow = Grid.GetRow(obstacle);
-                    int obstacleColumn = Grid.GetColumn(obstacle);
-
-                    if (obstacleRow < rowNumber)
-                    {
-                        borders = borders.Where(child => !(Grid.GetRow(child) <= obstacleRow));
-                    }
-                    else if (obstacleRow > rowNumber)
-                    {
-                        borders = borders.Where(child => !(Grid.GetRow(child) >= obstacleRow));
-                    }
-                    else if (obstacleColumn < columnNumber)
-                    {
-                        borders = borders.Where(child => !(Grid.GetColumn(child) <= obstacleColumn));
-                    }
-                    else if (obstacleColumn > columnNumber)
-                    {
-                        borders = borders.Where(child => !(Grid.GetColumn(child) >= obstacleColumn));
-                    }
-                }
+                borders = RemoveInvalidMoves(borders, "rook", rowNumber, columnNumber);
             }
             else if (chessPiece.Source.ToString().Contains("bishop"))
             {
@@ -152,6 +129,40 @@ namespace chessEasy
                     && Grid.GetRow(child) < rowNumber + 2
                     && Grid.GetRow(child) > rowNumber - 2);
             }
+
+            return borders;
+        }
+
+        private IEnumerable<Border> RemoveInvalidMoves(IEnumerable<Border> borders, string chessPieceName, int rowNumber, int columnNumber)
+        {
+            IEnumerable<Border> obstacles = borders.Where(child => child.Child != null);
+
+            if (chessPieceName.Equals("rook"))
+            {
+                foreach (Border obstacle in obstacles)
+                {
+                    int obstacleRow = Grid.GetRow(obstacle);
+                    int obstacleColumn = Grid.GetColumn(obstacle);
+
+                    if (obstacleRow < rowNumber)
+                    {
+                        borders = borders.Where(child => !(Grid.GetRow(child) <= obstacleRow));
+                    }
+                    else if (obstacleRow > rowNumber)
+                    {
+                        borders = borders.Where(child => !(Grid.GetRow(child) >= obstacleRow));
+                    }
+                    else if (obstacleColumn < columnNumber)
+                    {
+                        borders = borders.Where(child => !(Grid.GetColumn(child) <= obstacleColumn));
+                    }
+                    else if (obstacleColumn > columnNumber)
+                    {
+                        borders = borders.Where(child => !(Grid.GetColumn(child) >= obstacleColumn));
+                    }
+                }
+            }
+
 
             return borders;
         }
