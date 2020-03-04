@@ -166,6 +166,16 @@ namespace chessEasy
                     .Cast<Border>()
                     .Where(child => child.Child != null && Grid.GetRow(child) == rowNumber + 1 && (Grid.GetColumn(child) == columnNumber + 1 || Grid.GetColumn(child) == columnNumber - 1));
 
+                    foreach (Border situationalStep in situationalSteps)
+                    {
+                        Image image = (Image)situationalStep.Child;
+
+                        if (image.Source.ToString().Contains("black").Equals(chessPieceSource.Contains("black")))
+                        {
+                            situationalSteps = situationalSteps.Where(child => !(child.Equals(situationalStep)));
+                        }
+                    }
+
                     borders = borders.Concat(situationalSteps);
             }
                 else
@@ -181,6 +191,16 @@ namespace chessEasy
                     situationalSteps = chessBoard.Children
                     .Cast<Border>()
                     .Where(child => child.Child != null && Grid.GetRow(child) == rowNumber - 1 && (Grid.GetColumn(child) == columnNumber + 1 || Grid.GetColumn(child) == columnNumber - 1));
+
+                    foreach (Border situationalStep in situationalSteps)
+                    {
+                        Image image = (Image)situationalStep.Child;
+
+                        if (image.Source.ToString().Contains("black").Equals(chessPieceSource.Contains("black")))
+                        {
+                            borders = borders.Where(child => !(child.Equals(situationalStep)));
+                        }
+                    }
 
                     borders = borders.Concat(situationalSteps);
                 }
