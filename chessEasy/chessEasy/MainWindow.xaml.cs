@@ -179,19 +179,71 @@ namespace chessEasy
 
                     if (obstacleRow < rowNumber)
                     {
-                        borders = borders.Where(child => !(Grid.GetRow(child) <= obstacleRow));
+                        borders = borders.Where(child => !(Grid.GetRow(child) < obstacleRow));
+
+                        foreach (Border border in borders)
+                        {
+                            Image image = (Image)border.Child;
+
+                            if (image != null)
+                            {
+                                if (image.Source.ToString().Contains("black").Equals(chessPieceSource.Contains("black")))
+                                {
+                                    borders = borders.Where(child => !(child.Equals(border)));
+                                }
+                            }
+                        }
                     }
                     else if (obstacleRow > rowNumber)
                     {
-                        borders = borders.Where(child => !(Grid.GetRow(child) >= obstacleRow));
+                        borders = borders.Where(child => !(Grid.GetRow(child) > obstacleRow));
+
+                        foreach (Border border in borders)
+                        {
+                            Image image = (Image)border.Child;
+
+                            if (image != null)
+                            {
+                                if (image.Source.ToString().Contains("black").Equals(chessPieceSource.Contains("black")))
+                                {
+                                    borders = borders.Where(child => !(child.Equals(border)));
+                                }
+                            }
+                        }
                     }
                     else if (obstacleColumn < columnNumber)
                     {
-                        borders = borders.Where(child => !(Grid.GetColumn(child) <= obstacleColumn));
+                        borders = borders.Where(child => !(Grid.GetColumn(child) < obstacleColumn));
+
+                        foreach (Border border in borders)
+                        {
+                            Image image = (Image)border.Child;
+
+                            if (image != null)
+                            {
+                                if (image.Source.ToString().Contains("black").Equals(chessPieceSource.Contains("black")))
+                                {
+                                    borders = borders.Where(child => !(child.Equals(border)));
+                                }
+                            }
+                        }
                     }
                     else if (obstacleColumn > columnNumber)
                     {
-                        borders = borders.Where(child => !(Grid.GetColumn(child) >= obstacleColumn));
+                        borders = borders.Where(child => !(Grid.GetColumn(child) > obstacleColumn));
+
+                        foreach (Border border in borders)
+                        {
+                            Image image = (Image)border.Child;
+
+                            if (image != null)
+                            {
+                                if (image.Source.ToString().Contains("black").Equals(chessPieceSource.Contains("black")))
+                                {
+                                    borders = borders.Where(child => !(child.Equals(border)));
+                                }
+                            }
+                        }
                     }
                 }
             }
