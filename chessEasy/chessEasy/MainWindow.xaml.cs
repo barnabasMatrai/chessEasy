@@ -67,13 +67,14 @@ namespace chessEasy
             int rowNumber = Grid.GetRow(highlighted);
             int columnNumber = Grid.GetColumn(highlighted);
             Image chessPiece = (Image)highlighted.Child;
+            string chessPieceSource = chessPiece.Source.ToString();
 
             IEnumerable<Border> borders = null;
             IEnumerable<Border> obstacles = null;
 
             if (chessPiece.Source.ToString().Contains("pawn"))
             {
-                if (chessPiece.Source.ToString().Contains("black"))
+                if (chessPieceSource.Contains("black"))
                 {
                     borders = chessBoard.Children
                         .Cast<Border>()
@@ -86,31 +87,31 @@ namespace chessEasy
                         .Where(child => Grid.GetColumn(child) == columnNumber && Grid.GetRow(child) >= rowNumber - 2 && Grid.GetRow(child) < rowNumber);
                 }
             }
-            else if (chessPiece.Source.ToString().Contains("rook"))
+            else if (chessPieceSource.Contains("rook"))
             {
                 borders = chessBoard.Children
                     .Cast<Border>()
                     .Where(child => child != highlighted && (Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber));
 
-                borders = RemoveInvalidMoves(borders, "rook", rowNumber, columnNumber);
+                borders = RemoveInvalidMoves(borders, chessPieceSource, rowNumber, columnNumber);
             }
-            else if (chessPiece.Source.ToString().Contains("bishop"))
+            else if (chessPieceSource.Contains("bishop"))
             {
                 borders = chessBoard.Children
                     .Cast<Border>()
                     .Where(child => child != highlighted && Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber));
 
-                borders = RemoveInvalidMoves(borders, "bishop", rowNumber, columnNumber);
+                borders = RemoveInvalidMoves(borders, chessPieceSource, rowNumber, columnNumber);
             }
-            else if (chessPiece.Source.ToString().Contains("queen"))
+            else if (chessPieceSource.Contains("queen"))
             {
                 borders = chessBoard.Children
                     .Cast<Border>()
                     .Where(child => child != highlighted && (Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber) || Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber));
 
-                borders = RemoveInvalidMoves(borders, "queen", rowNumber, columnNumber);
+                borders = RemoveInvalidMoves(borders, chessPieceSource, rowNumber, columnNumber);
             }
-            else if (chessPiece.Source.ToString().Contains("knight"))
+            else if (chessPieceSource.Contains("knight"))
             {
                 borders = chessBoard.Children
                     .Cast<Border>()
@@ -123,9 +124,9 @@ namespace chessEasy
                     || Grid.GetColumn(child) == columnNumber - 1 && Grid.GetRow(child) == rowNumber + 2
                     || Grid.GetColumn(child) == columnNumber - 1 && Grid.GetRow(child) == rowNumber - 2);
 
-                borders = RemoveInvalidMoves(borders, "knight", rowNumber, columnNumber);
+                borders = RemoveInvalidMoves(borders, chessPieceSource, rowNumber, columnNumber);
             }
-            else if (chessPiece.Source.ToString().Contains("king"))
+            else if (chessPieceSource.Contains("king"))
             {
                 borders = chessBoard.Children
                     .Cast<Border>()
@@ -135,17 +136,17 @@ namespace chessEasy
                     && Grid.GetRow(child) < rowNumber + 2
                     && Grid.GetRow(child) > rowNumber - 2);
 
-                borders = RemoveInvalidMoves(borders, "king", rowNumber, columnNumber);
+                borders = RemoveInvalidMoves(borders, chessPieceSource, rowNumber, columnNumber);
             }
 
             return borders;
         }
 
-        private IEnumerable<Border> RemoveInvalidMoves(IEnumerable<Border> borders, string chessPieceName, int rowNumber, int columnNumber)
+        private IEnumerable<Border> RemoveInvalidMoves(IEnumerable<Border> borders, string chessPieceSource, int rowNumber, int columnNumber)
         {
             IEnumerable<Border> obstacles = borders.Where(child => child.Child != null);
 
-            if (chessPieceName.Equals("rook"))
+            if (chessPieceSource.Contains("rook"))
             {
                 foreach (Border obstacle in obstacles)
                 {
@@ -170,7 +171,7 @@ namespace chessEasy
                     }
                 }
             }
-            else if (chessPieceName.Equals("bishop"))
+            else if (chessPieceSource.Contains("bishop"))
             {
                 foreach (Border obstacle in obstacles)
                 {
@@ -195,7 +196,7 @@ namespace chessEasy
                     }
                 }
             }
-            else if (chessPieceName.Equals("queen"))
+            else if (chessPieceSource.Contains("queen"))
             {
                 foreach (Border obstacle in obstacles)
                 {
@@ -245,11 +246,11 @@ namespace chessEasy
                     }
                 }
             }
-            else if (chessPieceName.Equals("knight"))
+            else if (chessPieceSource.Contains("knight"))
             {
                 borders = borders.Where(child => !obstacles.Contains(child));
             }
-            else if (chessPieceName.Equals("king"))
+            else if (chessPieceSource.Contains("king"))
             {
                 borders = borders.Where(child => !obstacles.Contains(child));
             }
