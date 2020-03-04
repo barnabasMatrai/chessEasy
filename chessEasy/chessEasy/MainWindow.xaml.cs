@@ -107,6 +107,8 @@ namespace chessEasy
                 borders = chessBoard.Children
                     .Cast<Border>()
                     .Where(child => child != highlighted && (Math.Abs(Grid.GetColumn(child) - columnNumber) == Math.Abs(Grid.GetRow(child) - rowNumber) || Grid.GetColumn(child) == columnNumber || Grid.GetRow(child) == rowNumber));
+
+                borders = RemoveInvalidMoves(borders, "queen", rowNumber, columnNumber);
             }
             else if (chessPiece.Source.ToString().Contains("knight"))
             {
@@ -186,6 +188,56 @@ namespace chessEasy
                     else if (obstacleRow > rowNumber && obstacleColumn > columnNumber)
                     {
                         borders = borders.Where(child => !(Grid.GetRow(child) >= obstacleRow && Grid.GetColumn(child) >= obstacleColumn));
+                    }
+                }
+            }
+            else if (chessPieceName.Equals("queen"))
+            {
+                foreach (Border obstacle in obstacles)
+                {
+                    int obstacleRow = Grid.GetRow(obstacle);
+                    int obstacleColumn = Grid.GetColumn(obstacle);
+
+                    if (obstacleRow < rowNumber)
+                    {
+                        if (obstacleColumn < columnNumber)
+                        {
+                            borders = borders.Where(child => !(Grid.GetRow(child) <= obstacleRow && Grid.GetColumn(child) <= obstacleColumn));
+                        }
+                        else if (obstacleColumn > columnNumber)
+                        {
+                            borders = borders.Where(child => !(Grid.GetRow(child) <= obstacleRow && Grid.GetColumn(child) >= obstacleColumn));
+                        }
+                        else
+                        {
+                            borders = borders.Where(child => !(Grid.GetRow(child) <= obstacleRow && Grid.GetColumn(child) == obstacleColumn));
+                        }
+                    }
+                    else if (obstacleRow > rowNumber)
+                    {
+                        if (obstacleColumn < columnNumber)
+                        {
+                            borders = borders.Where(child => !(Grid.GetRow(child) >= obstacleRow && Grid.GetColumn(child) <= obstacleColumn));
+                        }
+                        else if (obstacleColumn > columnNumber)
+                        {
+                            borders = borders.Where(child => !(Grid.GetRow(child) >= obstacleRow && Grid.GetColumn(child) >= obstacleColumn));
+                        }
+                        else
+                        {
+                            borders = borders.Where(child => !(Grid.GetRow(child) >= obstacleRow && Grid.GetColumn(child) == obstacleColumn));
+                        }
+                    }
+                    else
+                    {
+                        if (obstacleColumn < columnNumber)
+                        {
+                            borders = borders.Where(child => !(Grid.GetRow(child) == obstacleRow && Grid.GetColumn(child) <= obstacleColumn));
+                        }
+                        else if (obstacleColumn > columnNumber)
+                        {
+                            borders = borders.Where(child => !(Grid.GetRow(child) == obstacleRow && Grid.GetColumn(child) >= obstacleColumn));
+                        }
                     }
                 }
             }
