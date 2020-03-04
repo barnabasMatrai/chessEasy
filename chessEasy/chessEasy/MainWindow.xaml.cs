@@ -134,6 +134,8 @@ namespace chessEasy
                     && Grid.GetColumn(child) > columnNumber - 2
                     && Grid.GetRow(child) < rowNumber + 2
                     && Grid.GetRow(child) > rowNumber - 2);
+
+                borders = RemoveInvalidMoves(borders, "king", rowNumber, columnNumber);
             }
 
             return borders;
@@ -244,6 +246,10 @@ namespace chessEasy
                 }
             }
             else if (chessPieceName.Equals("knight"))
+            {
+                borders = borders.Where(child => !obstacles.Contains(child));
+            }
+            else if (chessPieceName.Equals("king"))
             {
                 borders = borders.Where(child => !obstacles.Contains(child));
             }
