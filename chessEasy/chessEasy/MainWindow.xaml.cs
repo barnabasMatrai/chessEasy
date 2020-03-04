@@ -149,6 +149,8 @@ namespace chessEasy
 
             if (chessPieceSource.Contains("pawn"))
             {
+                IEnumerable<Border> situationalSteps = null;
+
                 if (chessPieceSource.Contains("black"))
                 {
                     foreach (Border obstacle in obstacles)
@@ -157,8 +159,15 @@ namespace chessEasy
                         int obstacleColumn = Grid.GetColumn(obstacle);
 
                         borders = borders.Where(child => !(Grid.GetRow(child) >= obstacleRow));
+
                     }
-                }
+
+                    situationalSteps = chessBoard.Children
+                    .Cast<Border>()
+                    .Where(child => child.Child != null && Grid.GetRow(child) == rowNumber + 1 && (Grid.GetColumn(child) == columnNumber + 1 || Grid.GetColumn(child) == columnNumber - 1));
+
+                    borders = borders.Concat(situationalSteps);
+            }
                 else
                 {
                     foreach (Border obstacle in obstacles)
@@ -168,6 +177,12 @@ namespace chessEasy
 
                         borders = borders.Where(child => !(Grid.GetRow(child) <= obstacleRow));
                     }
+
+                    situationalSteps = chessBoard.Children
+                    .Cast<Border>()
+                    .Where(child => child.Child != null && Grid.GetRow(child) == rowNumber - 1 && (Grid.GetColumn(child) == columnNumber + 1 || Grid.GetColumn(child) == columnNumber - 1));
+
+                    borders = borders.Concat(situationalSteps);
                 }
             }
             else if (chessPieceSource.Contains("rook"))
