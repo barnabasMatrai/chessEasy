@@ -426,6 +426,43 @@ namespace chessEasy
 
                     stepLocation.MouseDown -= MoveChessPiece;
                     stepLocation.MouseDown += ChooseChessPiece;
+
+                    bool chessPieceWasBlack = chessPiece.Source.ToString().Contains("black");
+
+                    foreach (Border border in chessBoard.Children)
+                    {
+                        if (border.Child != null)
+                        {
+                            Image borderChild = (Image)border.Child;
+
+                            if (chessPieceWasBlack)
+                            {
+                                if (borderChild.Source.ToString().Contains("white"))
+                                {
+                                    border.MouseDown -= MoveChessPiece;
+                                    border.MouseDown += ChooseChessPiece;
+                                }
+                                else
+                                {
+                                    border.MouseDown -= ChooseChessPiece;
+                                    border.MouseDown += MoveChessPiece;
+                                }
+                            }
+                            else
+                            {
+                                if (borderChild.Source.ToString().Contains("black"))
+                                {
+                                    border.MouseDown -= MoveChessPiece;
+                                    border.MouseDown += ChooseChessPiece;
+                                }
+                                else
+                                {
+                                    border.MouseDown -= ChooseChessPiece;
+                                    border.MouseDown += MoveChessPiece;
+                                }
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -527,8 +564,12 @@ namespace chessEasy
                     .Cast<Border>()
                     .Where(child => Grid.GetRow(child) == rowNumber && Grid.GetColumn(child) == i)
                     .First();
-                border.MouseDown -= MoveChessPiece;
-                border.MouseDown += ChooseChessPiece;
+
+                if (color.Equals("white"))
+                {
+                    border.MouseDown -= MoveChessPiece;
+                    border.MouseDown += ChooseChessPiece;
+                }
                 border.Child = chessPiece;
             }
         }
@@ -542,8 +583,12 @@ namespace chessEasy
                     .Cast<Border>()
                     .Where(child => Grid.GetRow(child) == rowNumber && Grid.GetColumn(child) == i)
                     .First();
-                border.MouseDown -= MoveChessPiece;
-                border.MouseDown += ChooseChessPiece;
+
+                if (color.Equals("white"))
+                {
+                    border.MouseDown -= MoveChessPiece;
+                    border.MouseDown += ChooseChessPiece;
+                }
                 border.Child = chessPiece;
             }
         }
