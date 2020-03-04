@@ -198,7 +198,7 @@ namespace chessEasy
 
                         if (image.Source.ToString().Contains("black").Equals(chessPieceSource.Contains("black")))
                         {
-                            borders = borders.Where(child => !(child.Equals(situationalStep)));
+                            situationalSteps = situationalSteps.Where(child => !(child.Equals(situationalStep)));
                         }
                     }
 
