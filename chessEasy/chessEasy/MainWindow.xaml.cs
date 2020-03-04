@@ -86,6 +86,8 @@ namespace chessEasy
                         .Cast<Border>()
                         .Where(child => Grid.GetColumn(child) == columnNumber && Grid.GetRow(child) >= rowNumber - 2 && Grid.GetRow(child) < rowNumber);
                 }
+
+                borders = RemoveInvalidMoves(borders, chessPieceSource, rowNumber, columnNumber);
             }
             else if (chessPieceSource.Contains("rook"))
             {
@@ -146,7 +148,30 @@ namespace chessEasy
         {
             IEnumerable<Border> obstacles = borders.Where(child => child.Child != null);
 
-            if (chessPieceSource.Contains("rook"))
+            if (chessPieceSource.Contains("pawn"))
+            {
+                if (chessPieceSource.Contains("black"))
+                {
+                    foreach (Border obstacle in obstacles)
+                    {
+                        int obstacleRow = Grid.GetRow(obstacle);
+                        int obstacleColumn = Grid.GetColumn(obstacle);
+
+                        borders = borders.Where(child => !(Grid.GetRow(child) >= obstacleRow));
+                    }
+                }
+                else
+                {
+                    foreach (Border obstacle in obstacles)
+                    {
+                        int obstacleRow = Grid.GetRow(obstacle);
+                        int obstacleColumn = Grid.GetColumn(obstacle);
+
+                        borders = borders.Where(child => !(Grid.GetRow(child) <= obstacleRow));
+                    }
+                }
+            }
+            else if (chessPieceSource.Contains("rook"))
             {
                 foreach (Border obstacle in obstacles)
                 {
