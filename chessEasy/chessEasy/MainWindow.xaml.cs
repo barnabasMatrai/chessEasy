@@ -50,19 +50,19 @@ namespace chessEasy
             if (highlighted != null)
             {
                 ColorTile(highlighted);
-                UnshowValidMoves();
+                UnshowValidMoves(highlighted);
                 UnregisterName(highlighted.Name);
             }
 
             border.Name = "highlighted";
             RegisterName(border.Name, border);
             border.Background = Brushes.Yellow;
-            ShowValidMoves();
+            ShowValidMoves(border);
         }
 
-        private IEnumerable<Border> GetValidMoves()
+        private IEnumerable<Border> GetValidMoves(Border piece)
         {
-            Border highlighted = (Border)FindName("highlighted");
+            Border highlighted = piece;
 
             int rowNumber = Grid.GetRow(highlighted);
             int columnNumber = Grid.GetColumn(highlighted);
@@ -378,9 +378,9 @@ namespace chessEasy
             return borders;
         }
 
-        private void ShowValidMoves()
+        private void ShowValidMoves(Border tile)
         {
-            IEnumerable<Border> borders = GetValidMoves();
+            IEnumerable<Border> borders = GetValidMoves(tile);
 
             if (borders != null)
             {
@@ -391,9 +391,9 @@ namespace chessEasy
             }
         }
 
-        private void UnshowValidMoves()
+        private void UnshowValidMoves(Border tile)
         {
-            IEnumerable<Border> borders = GetValidMoves();
+            IEnumerable<Border> borders = GetValidMoves(tile);
 
             if (borders != null)
             {
@@ -414,7 +414,7 @@ namespace chessEasy
                 if (stepLocation.Background == Brushes.LightGreen)
                 {
                     ColorTile(highlighted);
-                    UnshowValidMoves();
+                    UnshowValidMoves(highlighted);
                     UnregisterName(highlighted.Name);
 
                     highlighted.MouseDown -= ChooseChessPiece;
@@ -467,7 +467,7 @@ namespace chessEasy
                 else
                 {
                     ColorTile(highlighted);
-                    UnshowValidMoves();
+                    UnshowValidMoves(highlighted);
                     UnregisterName(highlighted.Name);
                 }
             }
