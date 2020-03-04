@@ -70,7 +70,6 @@ namespace chessEasy
             string chessPieceSource = chessPiece.Source.ToString();
 
             IEnumerable<Border> borders = null;
-            IEnumerable<Border> obstacles = null;
 
             if (chessPiece.Source.ToString().Contains("pawn"))
             {
