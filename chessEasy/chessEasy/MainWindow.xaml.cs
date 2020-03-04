@@ -122,6 +122,8 @@ namespace chessEasy
                     || Grid.GetColumn(child) == columnNumber + 1 && Grid.GetRow(child) == rowNumber - 2
                     || Grid.GetColumn(child) == columnNumber - 1 && Grid.GetRow(child) == rowNumber + 2
                     || Grid.GetColumn(child) == columnNumber - 1 && Grid.GetRow(child) == rowNumber - 2);
+
+                borders = RemoveInvalidMoves(borders, "knight", rowNumber, columnNumber);
             }
             else if (chessPiece.Source.ToString().Contains("king"))
             {
@@ -240,6 +242,10 @@ namespace chessEasy
                         }
                     }
                 }
+            }
+            else if (chessPieceName.Equals("knight"))
+            {
+                borders = borders.Where(child => !obstacles.Contains(child));
             }
 
             return borders;
