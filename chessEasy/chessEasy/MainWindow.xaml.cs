@@ -256,19 +256,32 @@ namespace chessEasy
 
                     if (obstacleRow < rowNumber && obstacleColumn < columnNumber)
                     {
-                        borders = borders.Where(child => !(Grid.GetRow(child) <= obstacleRow && Grid.GetColumn(child) <= obstacleColumn));
+                        borders = borders.Where(child => !(Grid.GetRow(child) < obstacleRow && Grid.GetColumn(child) < obstacleColumn));
                     }
                     else if (obstacleRow < rowNumber && obstacleColumn > columnNumber)
                     {
-                        borders = borders.Where(child => !(Grid.GetRow(child) <= obstacleRow && Grid.GetColumn(child) >= obstacleColumn));
+                        borders = borders.Where(child => !(Grid.GetRow(child) < obstacleRow && Grid.GetColumn(child) > obstacleColumn));
                     }
                     else if (obstacleRow > rowNumber && obstacleColumn < columnNumber)
                     {
-                        borders = borders.Where(child => !(Grid.GetRow(child) >= obstacleRow && Grid.GetColumn(child) <= obstacleColumn));
+                        borders = borders.Where(child => !(Grid.GetRow(child) > obstacleRow && Grid.GetColumn(child) < obstacleColumn));
                     }
                     else if (obstacleRow > rowNumber && obstacleColumn > columnNumber)
                     {
-                        borders = borders.Where(child => !(Grid.GetRow(child) >= obstacleRow && Grid.GetColumn(child) >= obstacleColumn));
+                        borders = borders.Where(child => !(Grid.GetRow(child) > obstacleRow && Grid.GetColumn(child) > obstacleColumn));
+                    }
+
+                    foreach (Border border in borders)
+                    {
+                        Image image = (Image)border.Child;
+
+                        if (image != null)
+                        {
+                            if (image.Source.ToString().Contains("black").Equals(chessPieceSource.Contains("black")))
+                            {
+                                borders = borders.Where(child => !(child.Equals(border)));
+                            }
+                        }
                     }
                 }
             }
