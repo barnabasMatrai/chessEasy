@@ -67,6 +67,11 @@ namespace chessEasy
             int rowNumber = Grid.GetRow(highlighted);
             int columnNumber = Grid.GetColumn(highlighted);
             Image chessPiece = (Image)highlighted.Child;
+
+            if (chessPiece == null)
+            {
+                return new List<Border>();
+            }
             string chessPieceSource = chessPiece.Source.ToString();
 
             IEnumerable<Border> borders = null;
@@ -378,6 +383,29 @@ namespace chessEasy
             return borders;
         }
 
+        private List<Border> GetPiecesCheckingKing(string color)
+        {
+            IEnumerable<Border> borders = chessBoard.Children.Cast<Border>().Where(child => child.Child != null);
+            List<Border> chessPiecesCheckingKing = new List<Border>();
+
+            foreach (Border border in borders)
+            {
+                IEnumerable<Border> validMoves = GetValidMoves(border);
+
+                foreach (Border border1 in validMoves)
+                {
+                    Image image = (Image)border1.Child;
+
+                    if (image != null && image.Source.ToString().Contains(color + "-king"))
+                    {
+                        chessPiecesCheckingKing.Add(border);
+                    }
+                }
+            }
+
+            return chessPiecesCheckingKing;
+        }
+
         private void ShowValidMoves(Border tile)
         {
             IEnumerable<Border> borders = GetValidMoves(tile);
@@ -404,6 +432,27 @@ namespace chessEasy
             }
         }
 
+        private IEnumerable<Border> GetBordersTargettingBorder(Border border)
+        {
+            IEnumerable<Border> bordersTargettingBorder = chessBoard.Children.Cast<Border>().Where(child => GetValidMoves(child).Contains(border));
+            Image borderChild = (Image)border.Child;
+
+            foreach (Border borderTargettingBorder in bordersTargettingBorder)
+            {
+                Image image = (Image)borderTargettingBorder.Child;
+
+                if (image != null && borderChild != null)
+                {
+                    if (image.Source.ToString().Contains("black").Equals(borderChild.Source.ToString().Contains("black")))
+                    {
+                        bordersTargettingBorder = bordersTargettingBorder.Where(child => !child.Equals(borderTargettingBorder));
+                    }
+                }
+            }
+
+            return bordersTargettingBorder;
+        }
+
         private void MoveChessPiece(object sender, MouseButtonEventArgs e)
         {
             Border highlighted = (Border)FindName("highlighted");
@@ -411,7 +460,27 @@ namespace chessEasy
 
             if (highlighted != null)
             {
-                if (stepLocation.Background == Brushes.LightGreen)
+                List<Border> piecesCheckingKing = GetPiecesCheckingKing("black");
+                bool stepLocationIsCheckingPiece = false;
+
+                if (piecesCheckingKing.Count > 0)
+                {
+                    foreach (Border pieceCheckingKing in piecesCheckingKing)
+                    {
+                        int checkingRow = Grid.GetRow(pieceCheckingKing);
+                        int checkingColumn = Grid.GetColumn(pieceCheckingKing);
+
+                        int stepLocationRow = Grid.GetRow(stepLocation);
+                        int stepLocationColumn = Grid.GetColumn(stepLocation);
+
+                        if (GetBordersTargettingBorder(stepLocation).Count() == 0 || checkingRow == stepLocationRow && checkingColumn == stepLocationColumn)
+                        {
+                            stepLocationIsCheckingPiece = true;
+                        }
+                    }
+                }
+
+                if ((piecesCheckingKing.Count == 0 || stepLocationIsCheckingPiece.Equals(true)) && stepLocation.Background == Brushes.LightGreen)
                 {
                     ColorTile(highlighted);
                     UnshowValidMoves(highlighted);
