@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using chessEasy.Models;
+
 namespace chessEasy
 {
     /// <summary>
@@ -23,8 +25,10 @@ namespace chessEasy
         public MainWindow()
         {
             InitializeComponent();
-            ColorBoard();
-            SetupBoard();
+            ChessBoard board = new ChessBoard();
+            chessBoard.Children.Add(board.GetBoard);
+            //ColorBoard();
+            //SetupBoard();
         }
 
         private void SetupBoard()

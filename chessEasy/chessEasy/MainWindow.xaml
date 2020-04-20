@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:chessEasy"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="600">
-    <Grid>
-        <Grid x:Name="chessBoard">
+    <Grid x:Name="chessBoard">
+        <!--<Grid x:Name="chessBoard">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
@@ -28,6 +28,6 @@
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-        </Grid>
+        </Grid>-->
     </Grid>
 </Window>

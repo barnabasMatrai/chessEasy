@@ -69,6 +69,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Bishop.cs" />
+    <Compile Include="Models\ChessBoard.cs" />
+    <Compile Include="Models\ChessPiece.cs" />
+    <Compile Include="Models\Color.cs" />
+    <Compile Include="Models\King.cs" />
+    <Compile Include="Models\Knight.cs" />
+    <Compile Include="Models\Pawn.cs" />
+    <Compile Include="Models\Queen.cs" />
+    <Compile Include="Models\Rook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
