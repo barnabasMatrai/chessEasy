@@ -15,7 +15,10 @@ namespace chessEasy.Models
         protected Color Color;
         protected Point Coordinates;
 
-        protected abstract void MoveChesspiece();
+        protected void MoveChessPiece(int x, int y)
+        {
+            this.Coordinates = new Point(x, y);
+        }
         protected abstract IEnumerable<Border> GetValidMoves();
         protected abstract IEnumerable<Border> RemoveInvalidMoves();
         protected void ShowValidMoves()

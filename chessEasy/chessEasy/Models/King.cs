@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace chessEasy.Models
 {
-    class King
+    class King : ChessPiece
     {
+        protected override IEnumerable<Border> GetValidMoves()
+        {
+            throw new NotImplementedException();
+        }
+        protected override IEnumerable<Border> RemoveInvalidMoves()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
