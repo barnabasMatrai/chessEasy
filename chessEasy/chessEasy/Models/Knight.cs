@@ -10,6 +10,11 @@ namespace chessEasy.Models
 {
     class Knight : ChessPiece
     {
+        public Knight(string imagePath, Point coordinates) : base(imagePath, coordinates)
+        {
+
+        }
+
         protected override IEnumerable<Border> GetValidMoves()
         {
             throw new NotImplementedException();

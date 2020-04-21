@@ -11,9 +11,25 @@ namespace chessEasy.Models
 {
     public abstract class ChessPiece
     {
-        protected string ImagePath;
+        protected Uri ImagePath;
         protected Color Color;
         protected Point Coordinates;
+
+        protected ChessPiece(string imagePath, Point coordinates)
+        {
+            this.ImagePath = new Uri(imagePath);
+
+            if (imagePath.Contains("black"))
+            {
+                this.Color = Color.Black;
+            }
+            else
+            {
+                this.Color = Color.White;
+            }
+
+            this.Coordinates = coordinates;
+        }
 
         protected void MoveChessPiece(int x, int y)
         {
