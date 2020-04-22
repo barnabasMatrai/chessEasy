@@ -25,8 +25,9 @@ namespace chessEasy
         public MainWindow()
         {
             InitializeComponent();
-            ChessBoard board = new ChessBoard();
-            chessBoard.Children.Add(board.GetBoard);
+            ChessBoard chessBoard = new ChessBoard();
+            MessageBox.Show(chessBoard.ToString());
+            //chessBoard.Children.Add(board.GetBoard);
             //ColorBoard();
             //SetupBoard();
         }

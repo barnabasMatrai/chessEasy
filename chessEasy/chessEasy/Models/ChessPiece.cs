@@ -13,11 +13,10 @@ namespace chessEasy.Models
     {
         protected Uri ImagePath;
         protected Color Color;
-        protected Point Coordinates;
 
-        protected ChessPiece(string imagePath, Point coordinates)
+        protected ChessPiece(string imagePath)
         {
-            this.ImagePath = new Uri(imagePath);
+            this.ImagePath = new Uri(imagePath, UriKind.Relative);
 
             if (imagePath.Contains("black"))
             {
@@ -27,14 +26,8 @@ namespace chessEasy.Models
             {
                 this.Color = Color.White;
             }
-
-            this.Coordinates = coordinates;
         }
 
-        protected void MoveChessPiece(int x, int y)
-        {
-            this.Coordinates = new Point(x, y);
-        }
         protected abstract IEnumerable<Border> GetValidMoves();
         protected abstract IEnumerable<Border> RemoveInvalidMoves();
         protected void ShowValidMoves()

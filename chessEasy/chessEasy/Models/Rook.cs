@@ -10,7 +10,7 @@ namespace chessEasy.Models
 {
     class Rook : ChessPiece
     {
-        public Rook(string imagePath, Point coordinates) : base(imagePath, coordinates)
+        public Rook(string imagePath) : base(imagePath)
         {
 
         }

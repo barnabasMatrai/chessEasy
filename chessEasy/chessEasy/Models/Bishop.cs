@@ -10,7 +10,7 @@ namespace chessEasy.Models
 {
     class Bishop : ChessPiece
     {
-        public Bishop(string imagePath, Point coordinates) : base(imagePath, coordinates)
+        public Bishop(string imagePath) : base(imagePath)
         {
 
         }
