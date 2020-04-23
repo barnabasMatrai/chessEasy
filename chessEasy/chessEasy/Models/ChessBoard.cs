@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace chessEasy.Models
 {
@@ -70,6 +71,7 @@ namespace chessEasy.Models
         {
             Grid board = CreateBoard();
             ColorBoard(board);
+            PopulateBoard(board);
 
             return board;
         }
@@ -134,10 +136,32 @@ namespace chessEasy.Models
                     }
                 }
         }
-        //private void AddChessPiece(ChessPiece chessPiece)
-        //{
-        //    ChessPieces.Add(chessPiece);
-        //}
+
+        private void PopulateBoard(Grid chessBoard)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (board[i, j] != null)
+                    {
+                        Image chessPieceImage = CreateImageFromChessPiece(board[i, j]);
+                        Grid.SetRow(chessPieceImage, i);
+                        Grid.SetColumn(chessPieceImage, j);
+                        chessBoard.Children.Add(chessPieceImage);
+                    }
+                }
+            };
+        }
+
+        private Image CreateImageFromChessPiece(ChessPiece chessPiece)
+        {
+            Image chessPieceImage = new Image();
+            ImageSource chessPieceSource = new BitmapImage(chessPiece.GetImagePath);
+            chessPieceImage.Source = chessPieceSource;
+
+            return chessPieceImage;
+        }
 
         public ChessPiece[,] GetBoard
         {

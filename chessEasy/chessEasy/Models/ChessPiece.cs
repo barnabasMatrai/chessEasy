@@ -42,5 +42,10 @@ namespace chessEasy.Models
                 }
             }
         }
+
+        public Uri GetImagePath
+        {
+            get { return this.ImagePath; }
+        }
     }
 }
