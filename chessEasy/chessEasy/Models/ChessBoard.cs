@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -12,10 +13,12 @@ namespace chessEasy.Models
 {
     public class ChessBoard
     {
+        private MainWindow mainWindow;
         private ChessPiece[,] board;
 
-        public ChessBoard()
+        public ChessBoard(MainWindow mainWindow)
         {
+            this.mainWindow = mainWindow;
             board = SetupBoard();
         }
 
@@ -107,6 +110,7 @@ namespace chessEasy.Models
                             border.Background = Brushes.Transparent;
                             Grid.SetRow(border, i);
                             Grid.SetColumn(border, j);
+                            border.MouseDown += MoveChessPiece;
                             board.Children.Add(border);
                         }
                         else
@@ -114,6 +118,7 @@ namespace chessEasy.Models
                             border.Background = Brushes.LightGray;
                             Grid.SetRow(border, i);
                             Grid.SetColumn(border, j);
+                            border.MouseDown += MoveChessPiece;
                             board.Children.Add(border);
                         }
                     }
@@ -124,6 +129,7 @@ namespace chessEasy.Models
                             border.Background = Brushes.LightGray;
                             Grid.SetRow(border, i);
                             Grid.SetColumn(border, j);
+                            border.MouseDown += MoveChessPiece;
                             board.Children.Add(border);
                         }
                         else
@@ -131,10 +137,40 @@ namespace chessEasy.Models
                             border.Background = Brushes.Transparent;
                             Grid.SetRow(border, i);
                             Grid.SetColumn(border, j);
+                            border.MouseDown += MoveChessPiece;
                             board.Children.Add(border);
                         }
                     }
                 }
+        }
+
+        private void ColorTile(Border border)
+        {
+            int rowNumber = Grid.GetRow(border);
+            int columnNumber = Grid.GetColumn(border);
+
+            if (rowNumber % 2 == 0)
+            {
+                if (columnNumber % 2 == 0)
+                {
+                    border.Background = Brushes.Transparent;
+                }
+                else
+                {
+                    border.Background = Brushes.LightGray;
+                }
+            }
+            else
+            {
+                if (columnNumber % 2 == 0)
+                {
+                    border.Background = Brushes.LightGray;
+                }
+                else
+                {
+                    border.Background = Brushes.Transparent;
+                }
+            }
         }
 
         private void PopulateBoard(Grid chessBoard)
@@ -146,12 +182,60 @@ namespace chessEasy.Models
                     if (board[i, j] != null)
                     {
                         Image chessPieceImage = CreateImageFromChessPiece(board[i, j]);
-                        Grid.SetRow(chessPieceImage, i);
-                        Grid.SetColumn(chessPieceImage, j);
-                        chessBoard.Children.Add(chessPieceImage);
+
+                        Border border = chessBoard.Children
+                        .Cast<Border>()
+                        .Where(child => Grid.GetRow(child) == i && Grid.GetColumn(child) == j)
+                        .First();
+
+                        chessPieceImage.MouseDown += ChooseChessPiece;
+
+                        border.Child = chessPieceImage;
                     }
                 }
             };
+        }
+
+        private void ChooseChessPiece(object sender, MouseButtonEventArgs e)
+        {
+            Border border = (Border)((Image)sender).Parent;
+            Border highlighted = (Border)mainWindow.FindName("highlighted");
+
+            if (border.Child != null)
+            {
+                if (highlighted != null)
+                {
+                    ColorTile(highlighted);
+                    //UnshowValidMoves(highlighted);
+                    mainWindow.UnregisterName(highlighted.Name);
+                }
+
+                border.Name = "highlighted";
+                mainWindow.RegisterName(border.Name, border);
+                border.Background = Brushes.Yellow;
+                //ShowValidMoves(border);
+            }
+        }
+
+        private void MoveChessPiece(object sender, MouseButtonEventArgs e)
+        {
+            Border border = (Border)sender;
+            Border highlighted = (Border)mainWindow.FindName("highlighted");
+
+            if (border.Child == null && highlighted != null)
+            {
+                int originX = Grid.GetRow(highlighted);
+                int originY = Grid.GetColumn(highlighted);
+
+                int destinationX = Grid.GetRow(border);
+                int destinationY = Grid.GetColumn(border);
+
+                board[destinationX, destinationY] = board[originX, originY];
+                board[originX, originY] = null;
+
+                mainWindow.chessBoard.Children.Remove(mainWindow.chessBoard.Children[0]);
+                mainWindow.chessBoard.Children.Add(ShowBoard());
+            }
         }
 
         private Image CreateImageFromChessPiece(ChessPiece chessPiece)
