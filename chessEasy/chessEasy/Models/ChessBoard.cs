@@ -229,13 +229,17 @@ namespace chessEasy.Models
                 int originX = Grid.GetRow(highlighted);
                 int originY = Grid.GetColumn(highlighted);
 
+                ChessPiece currentChessPiece = board[originX, originY];
+
                 int destinationX = Grid.GetRow(border);
                 int destinationY = Grid.GetColumn(border);
 
-                List<Point> validMoves = board[originX, originY].GetValidMoves();
+                List<Point> validMoves = currentChessPiece.GetValidMoves();
 
                 if (validMoves.Where(point => point.X == destinationX && point.Y == destinationY).Any())
                 {
+                    currentChessPiece.SetCoordinates = new Point(destinationX, destinationY);
+
                     board[destinationX, destinationY] = board[originX, originY];
                     board[originX, originY] = null;
 

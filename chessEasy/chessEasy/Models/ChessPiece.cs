@@ -52,5 +52,10 @@ namespace chessEasy.Models
         {
             get { return this.ImagePath; }
         }
+
+        public Point SetCoordinates
+        {
+            set { this.Coordinates = value; }
+        }
     }
 }
