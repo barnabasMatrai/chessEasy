@@ -11,11 +11,14 @@ namespace chessEasy.Models
 {
     public abstract class ChessPiece
     {
+        protected ChessBoard ChessBoard;
         protected Uri ImagePath;
         protected Color Color;
+        protected Point Coordinates;
 
-        protected ChessPiece(string imagePath)
+        protected ChessPiece(ChessBoard chessBoard, string imagePath, Point coordinates)
         {
+            this.ChessBoard = chessBoard;
             this.ImagePath = new Uri(imagePath, UriKind.Relative);
 
             if (imagePath.Contains("black"))
@@ -26,21 +29,23 @@ namespace chessEasy.Models
             {
                 this.Color = Color.White;
             }
+
+            this.Coordinates = coordinates;
         }
 
-        protected abstract IEnumerable<Border> GetValidMoves();
-        protected abstract IEnumerable<Border> RemoveInvalidMoves();
+        public abstract List<Point> GetValidMoves();
+        protected abstract List<Point> RemoveInvalidMoves();
         protected void ShowValidMoves()
         {
-            IEnumerable<Border> borders = GetValidMoves();
+            List<Point> borders = GetValidMoves();
 
-            if (borders != null)
-            {
-                foreach (Border border in borders)
-                {
-                    border.Background = Brushes.LightGreen;
-                }
-            }
+            //if (borders != null)
+            //{
+            //    foreach (Border border in borders)
+            //    {
+            //        border.Background = Brushes.LightGreen;
+            //    }
+            //}
         }
 
         public Uri GetImagePath

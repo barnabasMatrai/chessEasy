@@ -10,16 +10,16 @@ namespace chessEasy.Models
 {
     class Rook : ChessPiece
     {
-        public Rook(string imagePath) : base(imagePath)
+        public Rook(ChessBoard chessBoard, string imagePath, Point coordinates) : base(chessBoard, imagePath, coordinates)
         {
 
         }
 
-        protected override IEnumerable<Border> GetValidMoves()
+        public override List<Point> GetValidMoves()
         {
             throw new NotImplementedException();
         }
-        protected override IEnumerable<Border> RemoveInvalidMoves()
+        protected override List<Point> RemoveInvalidMoves()
         {
             throw new NotImplementedException();
         }

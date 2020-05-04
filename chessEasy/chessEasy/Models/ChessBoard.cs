@@ -34,18 +34,28 @@ namespace chessEasy.Models
 
         private ChessPiece[,] SetupSide(ChessPiece[,] board, Color color, int frontRow, int backRow)
         {
-            ChessPiece[] chessPieces = {
-                new Rook("images/" + color + "-rook.png"),
-                new Knight("images/" + color + "-knight.png"),
-                new Bishop("images/" + color + "-bishop.png"),
-                new King("images/" + color + "-king.png"),
-                new Queen("images/" + color + "-queen.png"),
-                new Bishop("images/" + color + "-bishop.png"),
-                new Knight("images/" + color + "-knight.png"),
-                new Rook("images/" + color + "-rook.png")};
+            ChessPiece[] chessPieces1 = {
+                new Rook(this, "images/" + color + "-rook.png", new Point(backRow, 0)),
+                new Knight(this, "images/" + color + "-knight.png", new Point(backRow, 1)),
+                new Bishop(this, "images/" + color + "-bishop.png", new Point(backRow, 2)),
+                new King(this, "images/" + color + "-king.png", new Point(backRow, 3)),
+                new Queen(this, "images/" + color + "-queen.png", new Point(backRow, 4)),
+                new Bishop(this, "images/" + color + "-bishop.png", new Point(backRow, 5)),
+                new Knight(this, "images/" + color + "-knight.png", new Point(backRow, 6)),
+                new Rook(this, "images/" + color + "-rook.png", new Point(backRow, 7))};
 
-            board = SetupRow(board, backRow, chessPieces);
-            board = SetupRow(board, frontRow, new Pawn("images/" + color + "-pawn.png"));
+            ChessPiece[] chessPieces2 = {
+                new Pawn(this, "images/" + color + "-pawn.png", new Point(frontRow, 0)),
+                new Pawn(this, "images/" + color + "-pawn.png", new Point(frontRow, 1)),
+                new Pawn(this, "images/" + color + "-pawn.png", new Point(frontRow, 2)),
+                new Pawn(this, "images/" + color + "-pawn.png", new Point(frontRow, 3)),
+                new Pawn(this, "images/" + color + "-pawn.png", new Point(frontRow, 4)),
+                new Pawn(this, "images/" + color + "-pawn.png", new Point(frontRow, 5)),
+                new Pawn(this, "images/" + color + "-pawn.png", new Point(frontRow, 6)),
+                new Pawn(this, "images/" + color + "-pawn.png", new Point(frontRow, 7))};
+
+            board = SetupRow(board, backRow, chessPieces1);
+            board = SetupRow(board, frontRow, chessPieces2);
 
             return board;
         }
@@ -55,16 +65,6 @@ namespace chessEasy.Models
             for (int i = 0; i < 8; i++)
             {
                 board[row, i] = chessPieces[i];
-            }
-
-            return board;
-        }
-
-        private ChessPiece[,] SetupRow(ChessPiece[,] board, int row, ChessPiece chessPiece)
-        {
-            for (int i = 0; i < 8; i++)
-            {
-                board[row, i] = chessPiece;
             }
 
             return board;
@@ -230,11 +230,16 @@ namespace chessEasy.Models
                 int destinationX = Grid.GetRow(border);
                 int destinationY = Grid.GetColumn(border);
 
-                board[destinationX, destinationY] = board[originX, originY];
-                board[originX, originY] = null;
+                List<Point> validMoves = board[originX, originY].GetValidMoves();
 
-                mainWindow.chessBoard.Children.Remove(mainWindow.chessBoard.Children[0]);
-                mainWindow.chessBoard.Children.Add(ShowBoard());
+                if (validMoves.Where(point => point.X == destinationX && point.Y == destinationY).Any())
+                {
+                    board[destinationX, destinationY] = board[originX, originY];
+                    board[originX, originY] = null;
+
+                    mainWindow.chessBoard.Children.Remove(mainWindow.chessBoard.Children[0]);
+                    mainWindow.chessBoard.Children.Add(ShowBoard());
+                }
             }
         }
 
