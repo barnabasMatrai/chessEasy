@@ -34,25 +34,27 @@ namespace chessEasy.Models
 
         private ChessPiece[,] SetupSide(ChessPiece[,] board, Color color, int frontRow, int backRow)
         {
+            string colorString = color.ToString().ToLower();
+
             ChessPiece[] chessPieces1 = {
-                new Rook(this, "images/" + color + "-rook.png", new Point(backRow, 0)),
-                new Knight(this, "images/" + color + "-knight.png", new Point(backRow, 1)),
-                new Bishop(this, "images/" + color + "-bishop.png", new Point(backRow, 2)),
-                new King(this, "images/" + color + "-king.png", new Point(backRow, 3)),
-                new Queen(this, "images/" + color + "-queen.png", new Point(backRow, 4)),
-                new Bishop(this, "images/" + color + "-bishop.png", new Point(backRow, 5)),
-                new Knight(this, "images/" + color + "-knight.png", new Point(backRow, 6)),
-                new Rook(this, "images/" + color + "-rook.png", new Point(backRow, 7))};
+                new Rook(this, "images/" + colorString + "-rook.png", new Point(backRow, 0)),
+                new Knight(this, "images/" + colorString + "-knight.png", new Point(backRow, 1)),
+                new Bishop(this, "images/" + colorString + "-bishop.png", new Point(backRow, 2)),
+                new King(this, "images/" + colorString + "-king.png", new Point(backRow, 3)),
+                new Queen(this, "images/" + colorString + "-queen.png", new Point(backRow, 4)),
+                new Bishop(this, "images/" + colorString + "-bishop.png", new Point(backRow, 5)),
+                new Knight(this, "images/" + colorString + "-knight.png", new Point(backRow, 6)),
+                new Rook(this, "images/" + colorString + "-rook.png", new Point(backRow, 7))};
 
             ChessPiece[] chessPieces2 = {
-                new Pawn(this, "images/" + color + "-pawn.png", new Point(frontRow, 0)),
-                new Pawn(this, "images/" + color + "-pawn.png", new Point(frontRow, 1)),
-                new Pawn(this, "images/" + color + "-pawn.png", new Point(frontRow, 2)),
-                new Pawn(this, "images/" + color + "-pawn.png", new Point(frontRow, 3)),
-                new Pawn(this, "images/" + color + "-pawn.png", new Point(frontRow, 4)),
-                new Pawn(this, "images/" + color + "-pawn.png", new Point(frontRow, 5)),
-                new Pawn(this, "images/" + color + "-pawn.png", new Point(frontRow, 6)),
-                new Pawn(this, "images/" + color + "-pawn.png", new Point(frontRow, 7))};
+                new Pawn(this, "images/" + colorString + "-pawn.png", new Point(frontRow, 0)),
+                new Pawn(this, "images/" + colorString + "-pawn.png", new Point(frontRow, 1)),
+                new Pawn(this, "images/" + colorString + "-pawn.png", new Point(frontRow, 2)),
+                new Pawn(this, "images/" + colorString + "-pawn.png", new Point(frontRow, 3)),
+                new Pawn(this, "images/" + colorString + "-pawn.png", new Point(frontRow, 4)),
+                new Pawn(this, "images/" + colorString + "-pawn.png", new Point(frontRow, 5)),
+                new Pawn(this, "images/" + colorString + "-pawn.png", new Point(frontRow, 6)),
+                new Pawn(this, "images/" + colorString + "-pawn.png", new Point(frontRow, 7))};
 
             board = SetupRow(board, backRow, chessPieces1);
             board = SetupRow(board, frontRow, chessPieces2);

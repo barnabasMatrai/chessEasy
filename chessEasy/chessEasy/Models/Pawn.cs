@@ -24,9 +24,19 @@ namespace chessEasy.Models
             {
                 for (int j = 0; j < board.GetLength(1); j++)
                 {
-                    if (j == Coordinates.Y && i <= Coordinates.X + 2 && i > Coordinates.X)
+                    if (this.Color == Color.Black)
                     {
-                        validMoves.Add(new Point(i, j));
+                        if (j == Coordinates.Y && i <= Coordinates.X + 2 && i > Coordinates.X)
+                        {
+                            validMoves.Add(new Point(i, j));
+                        }
+                    }
+                    else
+                    {
+                        if (j == Coordinates.Y && i >= Coordinates.X - 2 && i < Coordinates.X)
+                        {
+                            validMoves.Add(new Point(i, j));
+                        }
                     }
                 }
             }
