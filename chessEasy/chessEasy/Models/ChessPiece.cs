@@ -53,6 +53,11 @@ namespace chessEasy.Models
             get { return this.ImagePath; }
         }
 
+        public Color GetColor
+        {
+            get { return this.Color; }
+        }
+
         public Point SetCoordinates
         {
             set { this.Coordinates = value; }

@@ -15,11 +15,13 @@ namespace chessEasy.Models
     {
         private MainWindow mainWindow;
         private ChessPiece[,] board;
+        private int turnsPassed;
 
         public ChessBoard(MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
             board = SetupBoard();
+            turnsPassed = 0;
         }
 
         private ChessPiece[,] SetupBoard()
@@ -205,17 +207,23 @@ namespace chessEasy.Models
 
             if (border.Child != null)
             {
-                if (highlighted != null)
+                if ((board[Grid.GetRow(border), Grid.GetColumn(border)].GetColor == Color.Black
+                    && turnsPassed % 2 == 1)
+                    || (board[Grid.GetRow(border), Grid.GetColumn(border)].GetColor == Color.White
+                    && turnsPassed % 2 == 0))
                 {
-                    ColorTile(highlighted);
-                    //UnshowValidMoves(highlighted);
-                    mainWindow.UnregisterName(highlighted.Name);
-                }
+                    if (highlighted != null)
+                    {
+                        ColorTile(highlighted);
+                        //UnshowValidMoves(highlighted);
+                        mainWindow.UnregisterName(highlighted.Name);
+                    }
 
-                border.Name = "highlighted";
-                mainWindow.RegisterName(border.Name, border);
-                border.Background = Brushes.Yellow;
-                //ShowValidMoves(border);
+                    border.Name = "highlighted";
+                    mainWindow.RegisterName(border.Name, border);
+                    border.Background = Brushes.Yellow;
+                    //ShowValidMoves(border);
+                }
             }
         }
 
@@ -245,6 +253,8 @@ namespace chessEasy.Models
 
                     mainWindow.chessBoard.Children.Remove(mainWindow.chessBoard.Children[0]);
                     mainWindow.chessBoard.Children.Add(ShowBoard());
+
+                    turnsPassed++;
                 }
             }
         }
