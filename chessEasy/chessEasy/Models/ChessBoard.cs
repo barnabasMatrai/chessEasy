@@ -207,23 +207,54 @@ namespace chessEasy.Models
 
             if (border.Child != null)
             {
-                if ((board[Grid.GetRow(border), Grid.GetColumn(border)].GetColor == Color.Black
+                ChessPiece chessPiece = board[Grid.GetRow(border), Grid.GetColumn(border)];
+
+                if ((chessPiece.GetColor == Color.Black
                     && turnsPassed % 2 == 1)
-                    || (board[Grid.GetRow(border), Grid.GetColumn(border)].GetColor == Color.White
+                    || (chessPiece.GetColor == Color.White
                     && turnsPassed % 2 == 0))
                 {
                     if (highlighted != null)
                     {
+                        ChessPiece highlightedChessPiece = board[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)];
+                        
                         ColorTile(highlighted);
-                        //UnshowValidMoves(highlighted);
+                        List<Point> highlightedValidMoves = highlightedChessPiece.GetValidMoves();
+                        UnshowValidMoves(highlightedValidMoves);
                         mainWindow.UnregisterName(highlighted.Name);
                     }
 
                     border.Name = "highlighted";
                     mainWindow.RegisterName(border.Name, border);
                     border.Background = Brushes.Yellow;
-                    //ShowValidMoves(border);
+
+                    List<Point> validMoves = chessPiece.GetValidMoves();
+                    ShowValidMoves(validMoves);
                 }
+            }
+        }
+
+        private void ShowValidMoves(List<Point> validMoves)
+        {
+            foreach (Point point in validMoves)
+            {
+                Border border = ((Grid)mainWindow.chessBoard.Children[0]).Children
+                        .Cast<Border>()
+                        .Where(child => Grid.GetRow(child) == point.X && Grid.GetColumn(child) == point.Y)
+                        .First();
+                border.Background = Brushes.LightGreen;
+            }
+        }
+
+        private void UnshowValidMoves(List<Point> validMoves)
+        {
+            foreach (Point point in validMoves)
+            {
+                Border border = ((Grid)mainWindow.chessBoard.Children[0]).Children
+                        .Cast<Border>()
+                        .Where(child => Grid.GetRow(child) == point.X && Grid.GetColumn(child) == point.Y)
+                        .First();
+                ColorTile(border);
             }
         }
 
