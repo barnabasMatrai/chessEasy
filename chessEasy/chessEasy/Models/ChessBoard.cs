@@ -292,6 +292,13 @@ namespace chessEasy.Models
 
                     turnsPassed++;
                 }
+                else
+                {
+                    ColorTile(highlighted);
+                    List<Point> highlightedValidMoves = currentChessPiece.GetValidMoves();
+                    UnshowValidMoves(highlightedValidMoves);
+                    mainWindow.UnregisterName(highlighted.Name);
+                }
             }
         }
 
