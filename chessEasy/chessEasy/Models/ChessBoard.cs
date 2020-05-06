@@ -217,7 +217,10 @@ namespace chessEasy.Models
                     if (highlighted != null)
                     {
                         ChessPiece highlightedChessPiece = board[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)];
-                        
+
+                        int num = Grid.GetRow(highlighted);
+                        int num1 = Grid.GetColumn(highlighted);
+
                         ColorTile(highlighted);
                         List<Point> highlightedValidMoves = highlightedChessPiece.GetValidMoves();
                         UnshowValidMoves(highlightedValidMoves);
@@ -284,6 +287,8 @@ namespace chessEasy.Models
 
                     mainWindow.chessBoard.Children.Remove(mainWindow.chessBoard.Children[0]);
                     mainWindow.chessBoard.Children.Add(ShowBoard());
+
+                    mainWindow.UnregisterName(highlighted.Name);
 
                     turnsPassed++;
                 }
