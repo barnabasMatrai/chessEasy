@@ -209,20 +209,68 @@ namespace chessEasy.Models
             {
                 ChessPiece chessPiece = board[Grid.GetRow(border), Grid.GetColumn(border)];
 
+                if (highlighted != null)
+                {
+                    ChessPiece highlightedChessPiece = board[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)];
+
+                    List<Point> highlightedValidMoves = highlightedChessPiece.GetValidMoves();
+
+                    bool foundValidMove = false;
+
+                    foreach (Point validMove in highlightedValidMoves)
+                    {
+                        if (validMove.X == chessPiece.GetCoordinates.X
+                            && validMove.Y == chessPiece.GetCoordinates.Y)
+                        {
+                            board[Grid.GetRow(border), Grid.GetColumn(border)] = highlightedChessPiece;
+                            board[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)] = null;
+
+                            highlightedChessPiece.SetCoordinates = new Point(Grid.GetRow(border), Grid.GetColumn(border));
+
+                            foundValidMove = true;
+                        }
+                    }
+
+                    if (foundValidMove)
+                    {
+                        ColorTile(highlighted);
+                        UnshowValidMoves(highlightedValidMoves);
+                        mainWindow.UnregisterName(highlighted.Name);
+
+                        mainWindow.chessBoard.Children.Remove(mainWindow.chessBoard.Children[0]);
+                        mainWindow.chessBoard.Children.Add(ShowBoard());
+
+                        turnsPassed++;
+                    }
+
+                    return;
+                }
+
                 if ((chessPiece.GetColor == Color.Black
                     && turnsPassed % 2 == 1)
                     || (chessPiece.GetColor == Color.White
                     && turnsPassed % 2 == 0))
                 {
-                    if (highlighted != null)
-                    {
-                        ChessPiece highlightedChessPiece = board[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)];
+                    //if (highlighted != null)
+                    //{
+                    //    ChessPiece highlightedChessPiece = board[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)];
 
-                        ColorTile(highlighted);
-                        List<Point> highlightedValidMoves = highlightedChessPiece.GetValidMoves();
-                        UnshowValidMoves(highlightedValidMoves);
-                        mainWindow.UnregisterName(highlighted.Name);
-                    }
+                    //    ColorTile(highlighted);
+                    //    List<Point> highlightedValidMoves = highlightedChessPiece.GetValidMoves();
+                    //    UnshowValidMoves(highlightedValidMoves);
+                    //    mainWindow.UnregisterName(highlighted.Name);
+
+                    //    foreach (Point validMove in highlightedValidMoves)
+                    //    {
+                    //        if (validMove.X == chessPiece.GetCoordinates.X
+                    //            && validMove.Y == chessPiece.GetCoordinates.Y)
+                    //        {
+                    //            board[Grid.GetRow(border), Grid.GetColumn(border)] = highlightedChessPiece;
+                    //            board[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)] = null;
+                    //            return;
+                    //        }
+                    //    }
+                    //}
 
                     border.Name = "highlighted";
                     mainWindow.RegisterName(border.Name, border);
