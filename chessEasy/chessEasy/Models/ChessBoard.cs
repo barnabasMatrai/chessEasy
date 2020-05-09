@@ -218,9 +218,6 @@ namespace chessEasy.Models
                     {
                         ChessPiece highlightedChessPiece = board[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)];
 
-                        int num = Grid.GetRow(highlighted);
-                        int num1 = Grid.GetColumn(highlighted);
-
                         ColorTile(highlighted);
                         List<Point> highlightedValidMoves = highlightedChessPiece.GetValidMoves();
                         UnshowValidMoves(highlightedValidMoves);
