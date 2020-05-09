@@ -26,14 +26,14 @@ namespace chessEasy.Models
                 {
                     if (this.Color == Color.Black)
                     {
-                        if (j == Coordinates.Y && i <= Coordinates.X + 2 && i > Coordinates.X)
+                        if ((j == Coordinates.Y && i <= Coordinates.X + 2 && i > Coordinates.X))
                         {
                             validMoves.Add(new Point(i, j));
                         }
                     }
                     else
                     {
-                        if (j == Coordinates.Y && i >= Coordinates.X - 2 && i < Coordinates.X)
+                        if ((j == Coordinates.Y && i >= Coordinates.X - 2 && i < Coordinates.X))
                         {
                             validMoves.Add(new Point(i, j));
                         }
@@ -41,11 +41,56 @@ namespace chessEasy.Models
                 }
             }
 
+            validMoves = RemoveInvalidMoves(validMoves);
+
+            List<Point> situationalSteps;
+
+            if (this.Color == Color.Black)
+            {
+                situationalSteps = new List<Point>() { new Point(Coordinates.X + 1, Coordinates.Y - 1),
+                                                       new Point(Coordinates.X + 1, Coordinates.Y + 1)};
+            }
+            else
+            {
+                situationalSteps = new List<Point>() { new Point(Coordinates.X - 1, Coordinates.Y - 1),
+                                                       new Point(Coordinates.X - 1, Coordinates.Y + 1)};
+            }
+
+            foreach (Point situationalStep in situationalSteps)
+            {
+                ChessPiece chessPiece = board[(int)situationalStep.X, (int)situationalStep.Y];
+                if (chessPiece == null || chessPiece.GetColor == this.Color)
+                {
+                    situationalSteps = situationalSteps.Where(step => step != situationalStep).ToList();
+                }
+            }
+
+            validMoves = validMoves.Concat(situationalSteps).ToList();
+
             return validMoves;
         }
-        protected override List<Point> RemoveInvalidMoves()
+        protected override List<Point> RemoveInvalidMoves(List<Point> validMoves)
         {
-            throw new NotImplementedException();
+            ChessPiece[,] board = ChessBoard.GetBoard;
+
+            IEnumerable<Point> obstacles = validMoves
+                .Where(point => board[(int)point.X, (int)point.Y] != null);
+
+            foreach (Point obstacle in obstacles)
+            {
+                if (this.Color == Color.Black)
+                {
+                    validMoves = validMoves.Where(move =>
+                    !(move.X >= obstacle.X)).ToList();
+                }
+                else
+                {
+                    validMoves = validMoves.Where(move =>
+                    !(move.X <= obstacle.X)).ToList();
+                }
+            }
+
+            return validMoves;
         }
     }
 }

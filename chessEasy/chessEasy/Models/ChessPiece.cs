@@ -34,7 +34,7 @@ namespace chessEasy.Models
         }
 
         public abstract List<Point> GetValidMoves();
-        protected abstract List<Point> RemoveInvalidMoves();
+        protected abstract List<Point> RemoveInvalidMoves(List<Point> validMoves);
         protected void ShowValidMoves()
         {
             List<Point> borders = GetValidMoves();
@@ -56,6 +56,11 @@ namespace chessEasy.Models
         public Color GetColor
         {
             get { return this.Color; }
+        }
+
+        public Point GetCoordinates
+        {
+            get { return this.Coordinates; }
         }
 
         public Point SetCoordinates

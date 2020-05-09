@@ -41,7 +41,7 @@ namespace chessEasy.Models
 
             return validMoves;
         }
-        protected override List<Point> RemoveInvalidMoves()
+        protected override List<Point> RemoveInvalidMoves(List<Point> validMoves)
         {
             throw new NotImplementedException();
         }
