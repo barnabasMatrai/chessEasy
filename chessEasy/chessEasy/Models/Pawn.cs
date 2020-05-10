@@ -58,8 +58,16 @@ namespace chessEasy.Models
 
             foreach (Point situationalStep in situationalSteps)
             {
-                ChessPiece chessPiece = board[(int)situationalStep.X, (int)situationalStep.Y];
-                if (chessPiece == null || chessPiece.GetColor == this.Color)
+                if (situationalStep.X >= 0 && situationalStep.X < board.GetLength(1)
+                    && situationalStep.Y >= 0 && situationalStep.Y < board.GetLength(0))
+                {
+                    ChessPiece chessPiece = board[(int)situationalStep.X, (int)situationalStep.Y];
+                    if (chessPiece == null || chessPiece.GetColor == this.Color)
+                    {
+                        situationalSteps = situationalSteps.Where(step => step != situationalStep).ToList();
+                    }
+                }
+                else
                 {
                     situationalSteps = situationalSteps.Where(step => step != situationalStep).ToList();
                 }
