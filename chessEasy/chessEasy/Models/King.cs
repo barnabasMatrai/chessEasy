@@ -35,11 +35,28 @@ namespace chessEasy.Models
                 }
             }
 
+            validMoves = RemoveInvalidMoves(validMoves);
+
             return validMoves;
         }
         protected override List<Point> RemoveInvalidMoves(List<Point> validMoves)
         {
-            throw new NotImplementedException();
+            ChessPiece[,] board = ChessBoard.GetBoard;
+
+            IEnumerable<Point> obstacles = validMoves
+                .Where(point => board[(int)point.X, (int)point.Y] != null);
+
+            foreach (Point obstacle in obstacles)
+            {
+                if (board[(int)obstacle.X, (int)obstacle.Y].GetColor == this.Color)
+                {
+                    validMoves = validMoves
+                        .Where(move => !(move.X == obstacle.X && move.Y == obstacle.Y))
+                        .ToList();
+                }
+            }
+
+            return validMoves;
         }
     }
 }
