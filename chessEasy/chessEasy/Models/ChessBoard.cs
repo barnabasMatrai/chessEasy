@@ -174,58 +174,54 @@ namespace chessEasy.Models
         {
             Border border = (Border)((Image)sender).Parent;
             Border highlighted = (Border)mainWindow.FindName("highlighted");
+            ChessPiece chessPiece = board[Grid.GetRow(border), Grid.GetColumn(border)];
 
-            if (border.Child != null)
+            if (highlighted != null)
             {
-                ChessPiece chessPiece = board[Grid.GetRow(border), Grid.GetColumn(border)];
+                ChessPiece highlightedChessPiece = board[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)];
 
-                if (highlighted != null)
+                List<Point> highlightedValidMoves = highlightedChessPiece.GetValidMoves();
+
+                bool foundValidMove = false;
+
+                foreach (Point validMove in highlightedValidMoves)
                 {
-                    ChessPiece highlightedChessPiece = board[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)];
-
-                    List<Point> highlightedValidMoves = highlightedChessPiece.GetValidMoves();
-
-                    bool foundValidMove = false;
-
-                    foreach (Point validMove in highlightedValidMoves)
+                    if (validMove.X == chessPiece.GetCoordinates.X
+                        && validMove.Y == chessPiece.GetCoordinates.Y)
                     {
-                        if (validMove.X == chessPiece.GetCoordinates.X
-                            && validMove.Y == chessPiece.GetCoordinates.Y)
-                        {
-                            board[Grid.GetRow(border), Grid.GetColumn(border)] = highlightedChessPiece;
-                            board[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)] = null;
+                        board[Grid.GetRow(border), Grid.GetColumn(border)] = highlightedChessPiece;
+                        board[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)] = null;
 
-                            highlightedChessPiece.SetCoordinates = new Point(Grid.GetRow(border), Grid.GetColumn(border));
+                        highlightedChessPiece.SetCoordinates = new Point(Grid.GetRow(border), Grid.GetColumn(border));
 
-                            foundValidMove = true;
-                        }
+                        foundValidMove = true;
                     }
-
-                    if (foundValidMove)
-                    {
-                        ColorTile(highlighted);
-                        UnshowValidMoves(highlightedValidMoves);
-                        mainWindow.UnregisterName(highlighted.Name);
-
-                        mainWindow.chessBoard.Children.Remove(mainWindow.chessBoard.Children[0]);
-                        mainWindow.chessBoard.Children.Add(ShowBoard());
-
-                        currentTurnColor = currentTurnColor == Color.White ? Color.Black : Color.White;
-                    }
-
-                    return;
                 }
 
-                if (chessPiece.GetColor == currentTurnColor)
+                if (foundValidMove)
                 {
+                    ColorTile(highlighted);
+                    UnshowValidMoves(highlightedValidMoves);
+                    mainWindow.UnregisterName(highlighted.Name);
 
-                    border.Name = "highlighted";
-                    mainWindow.RegisterName(border.Name, border);
-                    border.Background = Brushes.Yellow;
+                    mainWindow.chessBoard.Children.Remove(mainWindow.chessBoard.Children[0]);
+                    mainWindow.chessBoard.Children.Add(ShowBoard());
 
-                    List<Point> validMoves = chessPiece.GetValidMoves();
-                    ShowValidMoves(validMoves);
+                    currentTurnColor = currentTurnColor == Color.White ? Color.Black : Color.White;
                 }
+
+                return;
+            }
+
+            if (chessPiece.GetColor == currentTurnColor)
+            {
+
+                border.Name = "highlighted";
+                mainWindow.RegisterName(border.Name, border);
+                border.Background = Brushes.Yellow;
+
+                List<Point> validMoves = chessPiece.GetValidMoves();
+                ShowValidMoves(validMoves);
             }
         }
 
