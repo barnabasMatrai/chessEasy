@@ -15,14 +15,14 @@ namespace chessEasy.Models
     {
         private MainWindow mainWindow;
         private ChessPiece[,] board;
-        private int turnsPassed;
+        private Color currentTurnColor;
         private const int BOARD_LENGTH = 8;
 
         public ChessBoard(MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
             board = SetupBoard();
-            turnsPassed = 0;
+            currentTurnColor = Color.White;
         }
 
         private ChessPiece[,] SetupBoard()
@@ -241,16 +241,13 @@ namespace chessEasy.Models
                         mainWindow.chessBoard.Children.Remove(mainWindow.chessBoard.Children[0]);
                         mainWindow.chessBoard.Children.Add(ShowBoard());
 
-                        turnsPassed++;
+                        currentTurnColor = currentTurnColor == Color.White ? Color.Black : Color.White;
                     }
 
                     return;
                 }
 
-                if ((chessPiece.GetColor == Color.Black
-                    && turnsPassed % 2 == 1)
-                    || (chessPiece.GetColor == Color.White
-                    && turnsPassed % 2 == 0))
+                if (chessPiece.GetColor == currentTurnColor)
                 {
 
                     border.Name = "highlighted";
@@ -316,7 +313,7 @@ namespace chessEasy.Models
 
                     mainWindow.UnregisterName(highlighted.Name);
 
-                    turnsPassed++;
+                    currentTurnColor = currentTurnColor == Color.White ? Color.Black : Color.White;
                 }
                 else
                 {
