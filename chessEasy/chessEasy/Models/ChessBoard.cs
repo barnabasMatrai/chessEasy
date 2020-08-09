@@ -252,26 +252,6 @@ namespace chessEasy.Models
                     || (chessPiece.GetColor == Color.White
                     && turnsPassed % 2 == 0))
                 {
-                    //if (highlighted != null)
-                    //{
-                    //    ChessPiece highlightedChessPiece = board[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)];
-
-                    //    ColorTile(highlighted);
-                    //    List<Point> highlightedValidMoves = highlightedChessPiece.GetValidMoves();
-                    //    UnshowValidMoves(highlightedValidMoves);
-                    //    mainWindow.UnregisterName(highlighted.Name);
-
-                    //    foreach (Point validMove in highlightedValidMoves)
-                    //    {
-                    //        if (validMove.X == chessPiece.GetCoordinates.X
-                    //            && validMove.Y == chessPiece.GetCoordinates.Y)
-                    //        {
-                    //            board[Grid.GetRow(border), Grid.GetColumn(border)] = highlightedChessPiece;
-                    //            board[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)] = null;
-                    //            return;
-                    //        }
-                    //    }
-                    //}
 
                     border.Name = "highlighted";
                     mainWindow.RegisterName(border.Name, border);
