@@ -49,15 +49,12 @@ namespace chessEasy.Models
                 new Knight(this, "images/" + colorString + "-knight.png", new Point(backRow, 6)),
                 new Rook(this, "images/" + colorString + "-rook.png", new Point(backRow, 7))};
 
-            ChessPiece[] chessPieces2 = {
-                new Pawn(this, "images/" + colorString + "-pawn.png", new Point(frontRow, 0)),
-                new Pawn(this, "images/" + colorString + "-pawn.png", new Point(frontRow, 1)),
-                new Pawn(this, "images/" + colorString + "-pawn.png", new Point(frontRow, 2)),
-                new Pawn(this, "images/" + colorString + "-pawn.png", new Point(frontRow, 3)),
-                new Pawn(this, "images/" + colorString + "-pawn.png", new Point(frontRow, 4)),
-                new Pawn(this, "images/" + colorString + "-pawn.png", new Point(frontRow, 5)),
-                new Pawn(this, "images/" + colorString + "-pawn.png", new Point(frontRow, 6)),
-                new Pawn(this, "images/" + colorString + "-pawn.png", new Point(frontRow, 7))};
+            ChessPiece[] chessPieces2 = new ChessPiece[BOARD_LENGTH];
+
+            for (int i = 0; i < BOARD_LENGTH; i++)
+            {
+                chessPieces2[i] = new Pawn(this, "images/" + colorString + "-pawn.png", new Point(frontRow, i));
+            }
 
             board = SetupRow(board, backRow, chessPieces1);
             board = SetupRow(board, frontRow, chessPieces2);
