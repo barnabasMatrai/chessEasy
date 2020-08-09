@@ -101,49 +101,21 @@ namespace chessEasy.Models
         private void ColorBoard(Grid board)
         {
             for (int i = 0; i < BOARD_LENGTH; i++)
+            {
                 for (int j = 0; j < BOARD_LENGTH; j++)
                 {
                     Border border = new Border();
 
-                    if (i % 2 == 0)
-                    {
-                        if (j % 2 == 0)
-                        {
-                            border.Background = Brushes.Transparent;
-                            Grid.SetRow(border, i);
-                            Grid.SetColumn(border, j);
-                            border.MouseDown += MoveChessPiece;
-                            board.Children.Add(border);
-                        }
-                        else
-                        {
-                            border.Background = Brushes.LightGray;
-                            Grid.SetRow(border, i);
-                            Grid.SetColumn(border, j);
-                            border.MouseDown += MoveChessPiece;
-                            board.Children.Add(border);
-                        }
-                    }
-                    else
-                    {
-                        if (j % 2 == 0)
-                        {
-                            border.Background = Brushes.LightGray;
-                            Grid.SetRow(border, i);
-                            Grid.SetColumn(border, j);
-                            border.MouseDown += MoveChessPiece;
-                            board.Children.Add(border);
-                        }
-                        else
-                        {
-                            border.Background = Brushes.Transparent;
-                            Grid.SetRow(border, i);
-                            Grid.SetColumn(border, j);
-                            border.MouseDown += MoveChessPiece;
-                            board.Children.Add(border);
-                        }
-                    }
+                    Grid.SetRow(border, i);
+                    Grid.SetColumn(border, j);
+                    
+                    border.MouseDown += MoveChessPiece;
+                    
+                    ColorTile(border);
+
+                    board.Children.Add(border);
                 }
+            }
         }
 
         private void ColorTile(Border border)
