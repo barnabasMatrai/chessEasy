@@ -16,6 +16,7 @@ namespace chessEasy.Models
         private MainWindow mainWindow;
         private ChessPiece[,] board;
         private int turnsPassed;
+        private const int BOARD_LENGTH = 8;
 
         public ChessBoard(MainWindow mainWindow)
         {
@@ -26,10 +27,10 @@ namespace chessEasy.Models
 
         private ChessPiece[,] SetupBoard()
         {
-            ChessPiece[,] board = new ChessPiece[8, 8];
+            ChessPiece[,] board = new ChessPiece[BOARD_LENGTH, BOARD_LENGTH];
 
             board = SetupSide(board, Color.Black, 1, 0);
-            board = SetupSide(board, Color.White, 6, 7);
+            board = SetupSide(board, Color.White, BOARD_LENGTH - 2, BOARD_LENGTH - 1);
 
             return board;
         }
@@ -66,7 +67,7 @@ namespace chessEasy.Models
 
         private ChessPiece[,] SetupRow(ChessPiece[,] board, int row, ChessPiece[] chessPieces)
         {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < BOARD_LENGTH; i++)
             {
                 board[row, i] = chessPieces[i];
             }
@@ -87,7 +88,7 @@ namespace chessEasy.Models
         {
             Grid board = new Grid();
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < BOARD_LENGTH; i++)
             {
                 ColumnDefinition columnDefinition = new ColumnDefinition();
                 columnDefinition.Width = new GridLength(1, GridUnitType.Star);
@@ -102,8 +103,8 @@ namespace chessEasy.Models
         }
         private void ColorBoard(Grid board)
         {
-            for (int i = 0; i < 8; i++)
-                for (int j = 0; j < 8; j++)
+            for (int i = 0; i < BOARD_LENGTH; i++)
+                for (int j = 0; j < BOARD_LENGTH; j++)
                 {
                     Border border = new Border();
 
@@ -179,9 +180,9 @@ namespace chessEasy.Models
 
         private void PopulateBoard(Grid chessBoard)
         {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < BOARD_LENGTH; i++)
             {
-                for (int j = 0; j < 8; j++)
+                for (int j = 0; j < BOARD_LENGTH; j++)
                 {
                     if (board[i, j] != null)
                     {
