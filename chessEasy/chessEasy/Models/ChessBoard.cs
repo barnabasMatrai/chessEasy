@@ -162,7 +162,11 @@ namespace chessEasy.Models
                         .Where(child => Grid.GetRow(child) == i && Grid.GetColumn(child) == j)
                         .First();
 
-                        chessPieceImage.MouseDown += ChooseChessPiece;
+                        if (board[i, j].GetColor == currentTurnColor)
+                        {
+                            border.MouseDown -= MoveChessPiece;
+                            chessPieceImage.MouseDown += ChooseChessPiece;
+                        }
 
                         border.Child = chessPieceImage;
                     }
@@ -182,35 +186,9 @@ namespace chessEasy.Models
 
                 List<Point> highlightedValidMoves = highlightedChessPiece.GetValidMoves();
 
-                bool foundValidMove = false;
-
-                foreach (Point validMove in highlightedValidMoves)
-                {
-                    if (validMove.X == chessPiece.GetCoordinates.X
-                        && validMove.Y == chessPiece.GetCoordinates.Y)
-                    {
-                        board[Grid.GetRow(border), Grid.GetColumn(border)] = highlightedChessPiece;
-                        board[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)] = null;
-
-                        highlightedChessPiece.SetCoordinates = new Point(Grid.GetRow(border), Grid.GetColumn(border));
-
-                        foundValidMove = true;
-                    }
-                }
-
-                if (foundValidMove)
-                {
-                    ColorTile(highlighted);
-                    UnshowValidMoves(highlightedValidMoves);
-                    mainWindow.UnregisterName(highlighted.Name);
-
-                    mainWindow.chessBoard.Children.Remove(mainWindow.chessBoard.Children[0]);
-                    mainWindow.chessBoard.Children.Add(ShowBoard());
-
-                    currentTurnColor = currentTurnColor == Color.White ? Color.Black : Color.White;
-                }
-
-                return;
+                ColorTile(highlighted);
+                UnshowValidMoves(highlightedValidMoves);
+                mainWindow.UnregisterName(highlighted.Name);
             }
 
             if (chessPiece.GetColor == currentTurnColor)
@@ -254,40 +232,47 @@ namespace chessEasy.Models
             Border border = (Border)sender;
             Border highlighted = (Border)mainWindow.FindName("highlighted");
 
-            if (border.Child == null && highlighted != null)
+            if (highlighted != null)
             {
+
                 int originX = Grid.GetRow(highlighted);
                 int originY = Grid.GetColumn(highlighted);
 
                 ChessPiece currentChessPiece = board[originX, originY];
 
-                int destinationX = Grid.GetRow(border);
-                int destinationY = Grid.GetColumn(border);
-
-                List<Point> validMoves = currentChessPiece.GetValidMoves();
-
-                if (validMoves.Where(point => point.X == destinationX && point.Y == destinationY).Any())
+                if (border.Child == null || currentChessPiece.GetColor == currentTurnColor)
                 {
-                    currentChessPiece.SetCoordinates = new Point(destinationX, destinationY);
 
-                    board[destinationX, destinationY] = board[originX, originY];
-                    board[originX, originY] = null;
+                    int destinationX = Grid.GetRow(border);
+                    int destinationY = Grid.GetColumn(border);
 
-                    mainWindow.chessBoard.Children.Remove(mainWindow.chessBoard.Children[0]);
-                    mainWindow.chessBoard.Children.Add(ShowBoard());
+                    List<Point> validMoves = currentChessPiece.GetValidMoves();
 
-                    mainWindow.UnregisterName(highlighted.Name);
+                    if (validMoves.Where(point => point.X == destinationX && point.Y == destinationY).Any())
+                    {
+                        currentChessPiece.SetCoordinates = new Point(destinationX, destinationY);
 
-                    currentTurnColor = currentTurnColor == Color.White ? Color.Black : Color.White;
-                }
-                else
-                {
-                    ColorTile(highlighted);
-                    List<Point> highlightedValidMoves = currentChessPiece.GetValidMoves();
-                    UnshowValidMoves(highlightedValidMoves);
-                    mainWindow.UnregisterName(highlighted.Name);
+                        board[destinationX, destinationY] = board[originX, originY];
+                        board[originX, originY] = null;
+                    
+                        currentTurnColor = currentTurnColor == Color.White ? Color.Black : Color.White;
+
+                        mainWindow.chessBoard.Children.Remove(mainWindow.chessBoard.Children[0]);
+                        mainWindow.chessBoard.Children.Add(ShowBoard());
+
+                        mainWindow.UnregisterName(highlighted.Name);
+
+                    }
+                    else
+                    {
+                        ColorTile(highlighted);
+                        List<Point> highlightedValidMoves = currentChessPiece.GetValidMoves();
+                        UnshowValidMoves(highlightedValidMoves);
+                        mainWindow.UnregisterName(highlighted.Name);
+                    }
                 }
             }
+
         }
 
         private Image CreateImageFromChessPiece(ChessPiece chessPiece)
