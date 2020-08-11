@@ -257,8 +257,7 @@ namespace chessEasy.Models
                     
                         currentTurnColor = currentTurnColor == Color.White ? Color.Black : Color.White;
 
-                        mainWindow.chessBoard.Children.Remove(mainWindow.chessBoard.Children[0]);
-                        mainWindow.chessBoard.Children.Add(ShowBoard());
+                        UpdateBoard();
 
                         mainWindow.UnregisterName(highlighted.Name);
 
@@ -273,6 +272,12 @@ namespace chessEasy.Models
                 }
             }
 
+        }
+
+        private void UpdateBoard()
+        {
+            mainWindow.chessBoard.Children.Remove(mainWindow.chessBoard.Children[0]);
+            mainWindow.chessBoard.Children.Add(ShowBoard());
         }
 
         private Image CreateImageFromChessPiece(ChessPiece chessPiece)
