@@ -207,10 +207,7 @@ namespace chessEasy.Models
         {
             foreach (Point point in validMoves)
             {
-                Border border = ((Grid)mainWindow.chessBoard.Children[0]).Children
-                        .Cast<Border>()
-                        .Where(child => Grid.GetRow(child) == point.X && Grid.GetColumn(child) == point.Y)
-                        .First();
+                Border border = GetBorderFromPoint(point);
                 border.Background = Brushes.LightGreen;
             }
         }
@@ -219,12 +216,19 @@ namespace chessEasy.Models
         {
             foreach (Point point in validMoves)
             {
-                Border border = ((Grid)mainWindow.chessBoard.Children[0]).Children
+                Border border = GetBorderFromPoint(point);
+                ColorTile(border);
+            }
+        }
+
+        private Border GetBorderFromPoint(Point point)
+        {
+            Border border = ((Grid)mainWindow.chessBoard.Children[0]).Children
                         .Cast<Border>()
                         .Where(child => Grid.GetRow(child) == point.X && Grid.GetColumn(child) == point.Y)
                         .First();
-                ColorTile(border);
-            }
+
+            return border;
         }
 
         private void MoveChessPiece(object sender, MouseButtonEventArgs e)
