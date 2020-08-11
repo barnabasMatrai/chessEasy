@@ -72,7 +72,7 @@ namespace chessEasy.Models
             return board;
         }
 
-        public Grid ShowBoard()
+        public Grid GenerateBoard()
         {
             Grid board = CreateBoard();
             ColorBoard(board);
@@ -277,7 +277,7 @@ namespace chessEasy.Models
         private void UpdateBoard()
         {
             mainWindow.chessBoard.Children.Remove(mainWindow.chessBoard.Children[0]);
-            mainWindow.chessBoard.Children.Add(ShowBoard());
+            mainWindow.chessBoard.Children.Add(GenerateBoard());
         }
 
         private Image CreateImageFromChessPiece(ChessPiece chessPiece)

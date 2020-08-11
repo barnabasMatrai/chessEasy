@@ -26,7 +26,7 @@ namespace chessEasy
         {
             InitializeComponent();
             ChessBoard board = new ChessBoard(this);
-            chessBoard.Children.Add(board.ShowBoard());
+            chessBoard.Children.Add(board.GenerateBoard());
         }
     }
 }
