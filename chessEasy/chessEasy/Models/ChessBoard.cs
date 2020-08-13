@@ -14,14 +14,14 @@ namespace chessEasy.Models
     public class ChessBoard
     {
         private MainWindow mainWindow;
-        private ChessPiece[,] board;
+        public ChessPiece[,] GetBoard { get; }
         private Color currentTurnColor;
         private const int BOARD_LENGTH = 8;
 
         public ChessBoard(MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
-            board = SetupBoard();
+            GetBoard = SetupBoard();
             currentTurnColor = Color.White;
         }
 
@@ -153,16 +153,16 @@ namespace chessEasy.Models
             {
                 for (int j = 0; j < BOARD_LENGTH; j++)
                 {
-                    if (board[i, j] != null)
+                    if (GetBoard[i, j] != null)
                     {
-                        Image chessPieceImage = CreateImageFromChessPiece(board[i, j]);
+                        Image chessPieceImage = CreateImageFromChessPiece(GetBoard[i, j]);
 
                         Border border = chessBoard.Children
                         .Cast<Border>()
                         .Where(child => Grid.GetRow(child) == i && Grid.GetColumn(child) == j)
                         .First();
 
-                        if (board[i, j].GetColor == currentTurnColor)
+                        if (GetBoard[i, j].GetColor == currentTurnColor)
                         {
                             border.MouseDown -= MoveChessPiece;
                             chessPieceImage.MouseDown += ChooseChessPiece;
@@ -178,11 +178,11 @@ namespace chessEasy.Models
         {
             Border border = (Border)((Image)sender).Parent;
             Border highlighted = (Border)mainWindow.FindName("highlighted");
-            ChessPiece chessPiece = board[Grid.GetRow(border), Grid.GetColumn(border)];
+            ChessPiece chessPiece = GetBoard[Grid.GetRow(border), Grid.GetColumn(border)];
 
             if (highlighted != null)
             {
-                ChessPiece highlightedChessPiece = board[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)];
+                ChessPiece highlightedChessPiece = GetBoard[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)];
 
                 List<Point> highlightedValidMoves = highlightedChessPiece.GetValidMoves();
 
@@ -242,7 +242,7 @@ namespace chessEasy.Models
                 int originX = Grid.GetRow(highlighted);
                 int originY = Grid.GetColumn(highlighted);
 
-                ChessPiece currentChessPiece = board[originX, originY];
+                ChessPiece currentChessPiece = GetBoard[originX, originY];
 
                 if (border.Child == null || currentChessPiece.GetColor == currentTurnColor)
                 {
@@ -256,8 +256,8 @@ namespace chessEasy.Models
                     {
                         currentChessPiece.SetCoordinates = new Point(destinationX, destinationY);
 
-                        board[destinationX, destinationY] = board[originX, originY];
-                        board[originX, originY] = null;
+                        GetBoard[destinationX, destinationY] = GetBoard[originX, originY];
+                        GetBoard[originX, originY] = null;
                     
                         currentTurnColor = currentTurnColor == Color.White ? Color.Black : Color.White;
 
@@ -293,23 +293,19 @@ namespace chessEasy.Models
             return chessPieceImage;
         }
 
-        public ChessPiece[,] GetBoard
-        {
-            get { return board; }
-        }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
 
-            for (int i = 0; i < board.GetLength(0); i++)
+            for (int i = 0; i < GetBoard.GetLength(0); i++)
             {
-                for (int j = 0; j < board.GetLength(1); j++)
+                for (int j = 0; j < GetBoard.GetLength(1); j++)
                 {
-                    if (board[i, j] != null)
+                    if (GetBoard[i, j] != null)
                     {
-                        sb.Append(board[i, j].GetType().Name[0]);
-                        sb.Append(board[i, j].GetType().Name[1]);
+                        sb.Append(GetBoard[i, j].GetType().Name[0]);
+                        sb.Append(GetBoard[i, j].GetType().Name[1]);
                     }
                     else
                     {
