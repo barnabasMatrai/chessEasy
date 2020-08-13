@@ -311,7 +311,7 @@ namespace chessEasy.Models
                     {
                         sb.Append("--");
                     }
-                    if (j == 7)
+                    if (j == BOARD_LENGTH - 1)
                     {
                         sb.Append("\n");
                     }
