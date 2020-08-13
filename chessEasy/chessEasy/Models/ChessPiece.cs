@@ -33,14 +33,6 @@ namespace chessEasy.Models
         protected void ShowValidMoves()
         {
             List<Point> borders = GetValidMoves();
-
-            //if (borders != null)
-            //{
-            //    foreach (Border border in borders)
-            //    {
-            //        border.Background = Brushes.LightGreen;
-            //    }
-            //}
         }
 
         public Uri GetImagePath
