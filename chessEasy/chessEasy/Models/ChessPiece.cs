@@ -15,16 +15,7 @@ namespace chessEasy.Models
         {
             this.ChessBoard = chessBoard;
             this.ImagePath = new Uri(imagePath, UriKind.Relative);
-
-            if (imagePath.Contains("black"))
-            {
-                this.Color = Color.Black;
-            }
-            else
-            {
-                this.Color = Color.White;
-            }
-
+            this.Color = imagePath.Contains("black") ? Color.Black : Color.White;
             this.Coordinates = coordinates;
         }
 
