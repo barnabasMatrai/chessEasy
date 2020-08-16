@@ -256,6 +256,8 @@ namespace chessEasy.Models
 
                         GetBoard[destinationX, destinationY] = GetBoard[originX, originY];
                         GetBoard[originX, originY] = null;
+
+                        PossibleChessPiecesToCounterCheck(currentTurnColor);
                     
                         currentTurnColor = currentTurnColor == Color.White ? Color.Black : Color.White;
 
@@ -333,6 +335,42 @@ namespace chessEasy.Models
             }
 
             return piecesCheckingKing;
+        }
+
+        private List<ChessPiece> PossibleChessPiecesToCounterCheck(Color color)
+        {
+            List<ChessPiece> checkingPieces = GetPiecesCheckingKing(color);
+            List<ChessPiece> chessPiecesToCounterCheck = new List<ChessPiece>();
+
+            foreach (ChessPiece chessPiece in checkingPieces)
+            {
+                chessPiecesToCounterCheck = PossibleChessPiecesToCaptureCheckingPiece(chessPiece);
+
+                foreach (ChessPiece possibleCapturer in chessPiecesToCounterCheck)
+                {
+                    MessageBox.Show(possibleCapturer.GetType().Name);
+                }
+            }
+            return chessPiecesToCounterCheck;
+        }
+
+        private List<ChessPiece> PossibleChessPiecesToCaptureCheckingPiece(ChessPiece checkingPiece)
+        {
+            ChessPiece[,] board = GetBoard;
+            List<ChessPiece> chessPiecesToCaptureCheckingPiece = new List<ChessPiece>();
+
+            foreach (ChessPiece chessPiece in board)
+            {
+                if (chessPiece != null)
+                {
+                    if (chessPiece.GetColor != checkingPiece.GetColor && chessPiece.GetValidMoves().Contains(checkingPiece.GetCoordinates))
+                    {
+                        chessPiecesToCaptureCheckingPiece.Add(chessPiece);
+                    }
+                }
+            }
+
+            return chessPiecesToCaptureCheckingPiece;
         }
 
         private Image CreateImageFromChessPiece(ChessPiece chessPiece)
