@@ -282,6 +282,59 @@ namespace chessEasy.Models
             mainWindow.chessBoard.Children.Add(GenerateBoard());
         }
 
+        private King GetKing(Color color)
+        {
+            ChessPiece[,] board = GetBoard;
+            King king = null;
+
+            for (int i = 0; i < board.GetLength(0); i++)
+            {
+                for (int j = 0; j < board.GetLength(1); j++)
+                {
+                    ChessPiece chessPiece = board[i, j];
+
+                    if (chessPiece != null)
+                    {
+                        if (chessPiece.GetType().Name == "King" && chessPiece.GetColor == color)
+                        {
+                            king = (King)chessPiece;
+                        }
+                    }
+                }
+            }
+
+            return king;
+        }
+
+        private List<ChessPiece> GetPiecesCheckingKing(Color color)
+        {
+            ChessPiece[,] board = GetBoard;
+            King king = GetKing(color);
+
+            List<ChessPiece> piecesCheckingKing = new List<ChessPiece>();
+
+            for (int i = 0; i < board.GetLength(0); i++)
+            {
+                for (int j = 0; j < board.GetLength(1); j++)
+                {
+                    ChessPiece chessPiece = board[i, j];
+
+                    if (chessPiece != null)
+                    {
+                        if (chessPiece.GetColor != king.GetColor)
+                        {
+                            if (chessPiece.GetValidMoves().Contains(king.GetCoordinates))
+                            {
+                                piecesCheckingKing.Add(chessPiece);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return piecesCheckingKing;
+        }
+
         private Image CreateImageFromChessPiece(ChessPiece chessPiece)
         {
             Image chessPieceImage = new Image();
