@@ -257,7 +257,7 @@ namespace chessEasy.Models
                         GetBoard[destinationX, destinationY] = GetBoard[originX, originY];
                         GetBoard[originX, originY] = null;
 
-                        PossibleChessPiecesToCounterCheck(currentTurnColor);
+                        PossibleMovesToCounterCheck(currentTurnColor);
                     
                         currentTurnColor = currentTurnColor == Color.White ? Color.Black : Color.White;
 
@@ -337,40 +337,17 @@ namespace chessEasy.Models
             return piecesCheckingKing;
         }
 
-        private List<ChessPiece> PossibleChessPiecesToCounterCheck(Color color)
+        private Dictionary<string, Point> PossibleMovesToCounterCheck(Color color)
         {
             List<ChessPiece> checkingPieces = GetPiecesCheckingKing(color);
-            List<ChessPiece> chessPiecesToCounterCheck = new List<ChessPiece>();
+            Dictionary<string, Point> movesToCounterCheck = new Dictionary<string, Point>();
 
-            foreach (ChessPiece chessPiece in checkingPieces)
+            if (checkingPieces.Count == 1)
             {
-                chessPiecesToCounterCheck = PossibleChessPiecesToCaptureCheckingPiece(chessPiece);
-
-                foreach (ChessPiece possibleCapturer in chessPiecesToCounterCheck)
-                {
-                    MessageBox.Show(possibleCapturer.GetType().Name);
-                }
-            }
-            return chessPiecesToCounterCheck;
-        }
-
-        private List<ChessPiece> PossibleChessPiecesToCaptureCheckingPiece(ChessPiece checkingPiece)
-        {
-            ChessPiece[,] board = GetBoard;
-            List<ChessPiece> chessPiecesToCaptureCheckingPiece = new List<ChessPiece>();
-
-            foreach (ChessPiece chessPiece in board)
-            {
-                if (chessPiece != null)
-                {
-                    if (chessPiece.GetColor != checkingPiece.GetColor && chessPiece.GetValidMoves().Contains(checkingPiece.GetCoordinates))
-                    {
-                        chessPiecesToCaptureCheckingPiece.Add(chessPiece);
-                    }
-                }
+                movesToCounterCheck.Add("Any", checkingPieces.First().GetCoordinates);
             }
 
-            return chessPiecesToCaptureCheckingPiece;
+            return movesToCounterCheck;
         }
 
         private Image CreateImageFromChessPiece(ChessPiece chessPiece)
