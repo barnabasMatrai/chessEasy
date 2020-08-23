@@ -257,9 +257,9 @@ namespace chessEasy.Models
                         GetBoard[destinationX, destinationY] = GetBoard[originX, originY];
                         GetBoard[originX, originY] = null;
 
-                        PossibleMovesToCounterCheck(currentTurnColor);
-                    
                         currentTurnColor = currentTurnColor == Color.White ? Color.Black : Color.White;
+                        
+                        PossibleMovesToCounterCheck(currentTurnColor);
 
                         UpdateBoard();
 
@@ -337,17 +337,40 @@ namespace chessEasy.Models
             return piecesCheckingKing;
         }
 
-        private Dictionary<string, Point> PossibleMovesToCounterCheck(Color color)
+        private Dictionary<string, List<Point>> PossibleMovesToCounterCheck(Color color)
         {
             List<ChessPiece> checkingPieces = GetPiecesCheckingKing(color);
-            Dictionary<string, Point> movesToCounterCheck = new Dictionary<string, Point>();
+            Dictionary<string, List<Point>> movesToCounterCheck = new Dictionary<string, List<Point>>();
+            
+            List<Point> anyMoves = new List<Point>();
+            List<Point> kingMoves = new List<Point>();
 
             if (checkingPieces.Count == 1)
             {
-                movesToCounterCheck.Add("Any", checkingPieces.First().GetCoordinates);
+                anyMoves.Add(checkingPieces.First().GetCoordinates);
             }
 
+            kingMoves.AddRange(PossibleMovesToCounterCheckByMovingKing(color, GetPiecesCheckingKing(color)));
+
+            movesToCounterCheck.Add("Any", anyMoves);
+            movesToCounterCheck.Add("King", kingMoves);
+
             return movesToCounterCheck;
+        }
+
+        private IEnumerable<Point> PossibleMovesToCounterCheckByMovingKing(Color color, List<ChessPiece> checkingPieces)
+        {
+            King king = GetKing(color);
+            IEnumerable<Point> kingValidMoves = king.GetValidMoves();
+
+            foreach (ChessPiece checkingPiece in checkingPieces)
+            {
+                List<Point> cpvalidMoves = checkingPiece.GetValidMoves();
+
+                kingValidMoves = kingValidMoves.Where(validMove => !cpvalidMoves.Contains(validMove) && validMove != checkingPiece.GetCoordinates);
+            }
+
+            return kingValidMoves;
         }
 
         private Image CreateImageFromChessPiece(ChessPiece chessPiece)
