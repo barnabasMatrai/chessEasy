@@ -244,27 +244,40 @@ namespace chessEasy.Models
 
                 if (border.Child == null || currentChessPiece.GetColor == currentTurnColor)
                 {
+                    bool kingIsChecked = KingIsChecked(currentTurnColor);
 
                     int destinationX = Grid.GetRow(border);
                     int destinationY = Grid.GetColumn(border);
 
-                    List<Point> validMoves = currentChessPiece.GetValidMoves();
-
-                    if (validMoves.Where(point => point.X == destinationX && point.Y == destinationY).Any())
+                    if (!kingIsChecked || (kingIsChecked && MoveResolvesCheck(currentTurnColor, currentChessPiece.GetCoordinates, new Point(destinationX, destinationY))))
                     {
-                        currentChessPiece.SetCoordinates = new Point(destinationX, destinationY);
+                        List<Point> validMoves = currentChessPiece.GetValidMoves();
 
-                        GetBoard[destinationX, destinationY] = GetBoard[originX, originY];
-                        GetBoard[originX, originY] = null;
+                        if (validMoves.Where(point => point.X == destinationX && point.Y == destinationY).Any())
+                        {
+                            currentChessPiece.SetCoordinates = new Point(destinationX, destinationY);
 
-                        currentTurnColor = currentTurnColor == Color.White ? Color.Black : Color.White;
+                            GetBoard[destinationX, destinationY] = GetBoard[originX, originY];
+                            GetBoard[originX, originY] = null;
+
+                            currentTurnColor = currentTurnColor == Color.White ? Color.Black : Color.White;
                         
-                        PossibleMovesToCounterCheck(currentTurnColor);
+                            UpdateBoard();
 
-                        UpdateBoard();
+                            mainWindow.UnregisterName(highlighted.Name);
 
-                        mainWindow.UnregisterName(highlighted.Name);
-
+                            if (IsCheckMate(currentTurnColor))
+                            {
+                                MessageBox.Show(currentTurnColor.ToString() + " has lost");
+                            }
+                        }
+                        else
+                        {
+                            ColorTile(highlighted);
+                            List<Point> highlightedValidMoves = currentChessPiece.GetValidMoves();
+                            UnshowValidMoves(highlightedValidMoves);
+                            mainWindow.UnregisterName(highlighted.Name);
+                        }
                     }
                     else
                     {
@@ -273,6 +286,7 @@ namespace chessEasy.Models
                         UnshowValidMoves(highlightedValidMoves);
                         mainWindow.UnregisterName(highlighted.Name);
                     }
+
                 }
             }
 
@@ -308,12 +322,11 @@ namespace chessEasy.Models
             return king;
         }
 
-        private List<ChessPiece> GetPiecesCheckingKing(Color color)
+        private bool KingIsChecked(Color color)
         {
             ChessPiece[,] board = GetBoard;
             King king = GetKing(color);
-
-            List<ChessPiece> piecesCheckingKing = new List<ChessPiece>();
+            Point kingCoordinates = king.GetCoordinates;
 
             for (int i = 0; i < board.GetLength(0); i++)
             {
@@ -323,54 +336,79 @@ namespace chessEasy.Models
 
                     if (chessPiece != null)
                     {
-                        if (chessPiece.GetColor != king.GetColor)
+                        if (chessPiece.GetValidMoves().Contains(kingCoordinates))
                         {
-                            if (chessPiece.GetValidMoves().Contains(king.GetCoordinates))
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool IsCheckMate(Color color)
+        {
+            ChessPiece[,] board = GetBoard;
+            King king = GetKing(color);
+
+            for (int i = 0; i < board.GetLength(0); i++)
+            {
+                for (int j = 0; j < board.GetLength(1); j++)
+                {
+                    ChessPiece chessPiece = board[i, j];
+
+                    if (chessPiece != null)
+                    {
+                        if (chessPiece.GetColor == king.GetColor)
+                        {
+                            foreach (Point move in chessPiece.GetValidMoves())
                             {
-                                piecesCheckingKing.Add(chessPiece);
+                                if (MoveResolvesCheck(color, chessPiece.GetCoordinates, move))
+                                {
+                                    return false;
+                                }
                             }
                         }
                     }
                 }
             }
 
-            return piecesCheckingKing;
+            return true;
         }
 
-        private Dictionary<string, List<Point>> PossibleMovesToCounterCheck(Color color)
+        private bool MoveResolvesCheck(Color color, Point origin, Point move)
         {
-            List<ChessPiece> checkingPieces = GetPiecesCheckingKing(color);
-            Dictionary<string, List<Point>> movesToCounterCheck = new Dictionary<string, List<Point>>();
-            
-            List<Point> anyMoves = new List<Point>();
-            List<Point> kingMoves = new List<Point>();
+            ChessPiece[,] board = GetBoard;
 
-            if (checkingPieces.Count == 1)
+            int originX = (int) origin.X;
+            int originY = (int) origin.Y;
+
+            int moveX = (int) move.X;
+            int moveY = (int) move.Y;
+
+            ChessPiece chessPieceAtMove = board[moveX, moveY];
+
+            bool moveResolvesCheck = false;
+
+            if ((chessPieceAtMove != null && chessPieceAtMove.GetType().Name != "King") || chessPieceAtMove == null)
             {
-                anyMoves.Add(checkingPieces.First().GetCoordinates);
+                board[moveX, moveY] = board[originX, originY];
+                board[originX, originY] = null;
+
+                board[moveX, moveY].SetCoordinates = move;
+
+                if (!KingIsChecked(color))
+                {
+                    moveResolvesCheck = true;
+                }
+
+                board[originX, originY] = board[moveX, moveY];
+                board[moveX, moveY] = chessPieceAtMove;
+
+                board[originX, originY].SetCoordinates = origin;
             }
-
-            kingMoves.AddRange(PossibleMovesToCounterCheckByMovingKing(color, GetPiecesCheckingKing(color)));
-
-            movesToCounterCheck.Add("Any", anyMoves);
-            movesToCounterCheck.Add("King", kingMoves);
-
-            return movesToCounterCheck;
-        }
-
-        private IEnumerable<Point> PossibleMovesToCounterCheckByMovingKing(Color color, List<ChessPiece> checkingPieces)
-        {
-            King king = GetKing(color);
-            IEnumerable<Point> kingValidMoves = king.GetValidMoves();
-
-            foreach (ChessPiece checkingPiece in checkingPieces)
-            {
-                List<Point> cpvalidMoves = checkingPiece.GetValidMoves();
-
-                kingValidMoves = kingValidMoves.Where(validMove => !cpvalidMoves.Contains(validMove) && validMove != checkingPiece.GetCoordinates);
-            }
-
-            return kingValidMoves;
+            return moveResolvesCheck;
         }
 
         private Image CreateImageFromChessPiece(ChessPiece chessPiece)
