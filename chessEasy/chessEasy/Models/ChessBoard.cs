@@ -249,7 +249,7 @@ namespace chessEasy.Models
                     int destinationX = Grid.GetRow(border);
                     int destinationY = Grid.GetColumn(border);
 
-                    if ((!kingIsChecked && MoveResolvesCheck(currentTurnColor, new Point(originX, originY), new Point(destinationX, destinationY))) || (kingIsChecked && MoveResolvesCheck(currentTurnColor, currentChessPiece.GetCoordinates, new Point(destinationX, destinationY))))
+                    if (MoveResolvesCheck(currentTurnColor, currentChessPiece.GetCoordinates, new Point(destinationX, destinationY)))
                     {
                         List<Point> validMoves = currentChessPiece.GetValidMoves();
 
