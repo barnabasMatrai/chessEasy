@@ -8,7 +8,7 @@ using System.Windows.Controls;
 
 namespace chessEasy.Models
 {
-    class King : ChessPiece
+    public class King : ChessPiece
     {
         public King(ChessBoard chessBoard, string imagePath, Point coordinates) : base(chessBoard, imagePath, coordinates)
         {

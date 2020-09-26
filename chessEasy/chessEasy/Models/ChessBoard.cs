@@ -249,7 +249,7 @@ namespace chessEasy.Models
                     int destinationX = Grid.GetRow(border);
                     int destinationY = Grid.GetColumn(border);
 
-                    if (MoveResolvesCheck(currentTurnColor, currentChessPiece.GetCoordinates, new Point(destinationX, destinationY)))
+                    if (currentChessPiece.MoveResolvesCheck(currentTurnColor, new Point(destinationX, destinationY)))
                     {
                         List<Point> validMoves = currentChessPiece.GetValidMoves();
 
@@ -322,7 +322,7 @@ namespace chessEasy.Models
             return king;
         }
 
-        private bool KingIsChecked(Color color)
+        public bool KingIsChecked(Color color)
         {
             ChessPiece[,] board = GetBoard;
             King king = GetKing(color);
@@ -364,7 +364,7 @@ namespace chessEasy.Models
                         {
                             foreach (Point move in chessPiece.GetValidMoves())
                             {
-                                if (MoveResolvesCheck(color, chessPiece.GetCoordinates, move))
+                                if (chessPiece.MoveResolvesCheck(color, move))
                                 {
                                     return false;
                                 }
@@ -377,39 +377,39 @@ namespace chessEasy.Models
             return true;
         }
 
-        private bool MoveResolvesCheck(Color color, Point origin, Point move)
-        {
-            ChessPiece[,] board = GetBoard;
+        //private bool MoveResolvesCheck(Color color, Point origin, Point move)
+        //{
+        //    ChessPiece[,] board = GetBoard;
 
-            int originX = (int) origin.X;
-            int originY = (int) origin.Y;
+        //    int originX = (int) origin.X;
+        //    int originY = (int) origin.Y;
 
-            int moveX = (int) move.X;
-            int moveY = (int) move.Y;
+        //    int moveX = (int) move.X;
+        //    int moveY = (int) move.Y;
 
-            ChessPiece chessPieceAtMove = board[moveX, moveY];
+        //    ChessPiece chessPieceAtMove = board[moveX, moveY];
 
-            bool moveResolvesCheck = false;
+        //    bool moveResolvesCheck = false;
 
-            if ((chessPieceAtMove != null && chessPieceAtMove.GetType().Name != "King") || chessPieceAtMove == null)
-            {
-                board[moveX, moveY] = board[originX, originY];
-                board[originX, originY] = null;
+        //    if ((chessPieceAtMove != null && chessPieceAtMove.GetType().Name != "King") || chessPieceAtMove == null)
+        //    {
+        //        board[moveX, moveY] = board[originX, originY];
+        //        board[originX, originY] = null;
 
-                board[moveX, moveY].SetCoordinates = move;
+        //        board[moveX, moveY].SetCoordinates = move;
 
-                if (!KingIsChecked(color))
-                {
-                    moveResolvesCheck = true;
-                }
+        //        if (!KingIsChecked(color))
+        //        {
+        //            moveResolvesCheck = true;
+        //        }
 
-                board[originX, originY] = board[moveX, moveY];
-                board[moveX, moveY] = chessPieceAtMove;
+        //        board[originX, originY] = board[moveX, moveY];
+        //        board[moveX, moveY] = chessPieceAtMove;
 
-                board[originX, originY].SetCoordinates = origin;
-            }
-            return moveResolvesCheck;
-        }
+        //        board[originX, originY].SetCoordinates = origin;
+        //    }
+        //    return moveResolvesCheck;
+        //}
 
         private Image CreateImageFromChessPiece(ChessPiece chessPiece)
         {
