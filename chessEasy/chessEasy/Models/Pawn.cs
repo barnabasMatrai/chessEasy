@@ -10,9 +10,10 @@ namespace chessEasy.Models
 {
     class Pawn : ChessPiece
     {
+        private bool hasStepped;
         public Pawn(ChessBoard chessBoard, string imagePath, Point coordinates) : base(chessBoard, imagePath, coordinates)
         {
-
+            hasStepped = false;
         }
 
         public override List<Point> GetValidMoves()
@@ -26,16 +27,24 @@ namespace chessEasy.Models
                 {
                     if (this.Color == Color.Black)
                     {
-                        if ((j == Coordinates.Y && i <= Coordinates.X + 2 && i > Coordinates.X))
+                        if (j == Coordinates.Y && i > Coordinates.X)
                         {
-                            validMoves.Add(new Point(i, j));
+                            if (i == Coordinates.X + 1 ||
+                                i == Coordinates.X + 2 && hasStepped is false)
+                            {
+                                validMoves.Add(new Point(i, j));
+                            }
                         }
                     }
                     else
                     {
-                        if ((j == Coordinates.Y && i >= Coordinates.X - 2 && i < Coordinates.X))
+                        if ((j == Coordinates.Y && i < Coordinates.X))
                         {
-                            validMoves.Add(new Point(i, j));
+                            if (i == Coordinates.X - 1 ||
+                                i == Coordinates.X - 2 && hasStepped is false)
+                            {
+                                validMoves.Add(new Point(i, j));
+                            }
                         }
                     }
                 }
@@ -108,6 +117,11 @@ namespace chessEasy.Models
             validMoves.RemoveAll(move => !MoveResolvesCheck(Color, move));
 
             return validMoves;
+        }
+
+        public bool SetHasStepped
+        {
+            set { this.hasStepped = value; }
         }
     }
 }

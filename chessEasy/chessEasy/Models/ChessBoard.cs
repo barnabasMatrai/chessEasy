@@ -287,6 +287,10 @@ namespace chessEasy.Models
 
                         if (validMoves.Where(point => point.X == destinationX && point.Y == destinationY).Any())
                         {
+                            if (currentChessPiece.GetType().Name == "Pawn")
+                            {
+                                ((Pawn)currentChessPiece).SetHasStepped = true;
+                            }
                             currentChessPiece.SetCoordinates = new Point(destinationX, destinationY);
 
                             GetBoard[destinationX, destinationY] = GetBoard[originX, originY];
