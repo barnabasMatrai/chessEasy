@@ -62,5 +62,14 @@ namespace chessEasy.Models
 
             return validMoves;
         }
+
+        public override List<Point> GetValidMovesIfKingIsChecked()
+        {
+            List<Point> validMoves = RemoveInvalidMoves(GetValidMoves());
+
+            validMoves.RemoveAll(move => !MoveResolvesCheck(Color, move));
+
+            return validMoves;
+        }
     }
 }

@@ -182,7 +182,17 @@ namespace chessEasy.Models
             {
                 ChessPiece highlightedChessPiece = GetBoard[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)];
 
-                List<Point> highlightedValidMoves = highlightedChessPiece.GetValidMoves();
+                //List<Point> highlightedValidMoves = highlightedChessPiece.GetValidMoves();
+                List<Point> highlightedValidMoves = null;
+
+                if (!KingIsChecked(currentTurnColor))
+                {
+                    highlightedValidMoves = highlightedChessPiece.GetValidMoves();
+                }
+                else
+                {
+                    highlightedValidMoves = highlightedChessPiece.GetValidMovesIfKingIsChecked();
+                }
 
                 ColorTile(highlighted);
                 UnshowValidMoves(highlightedValidMoves);
@@ -196,7 +206,19 @@ namespace chessEasy.Models
                 mainWindow.RegisterName(border.Name, border);
                 border.Background = Brushes.Yellow;
 
-                List<Point> validMoves = chessPiece.GetValidMoves();
+                //List<Point> validMoves = chessPiece.GetValidMoves();
+
+                List<Point> validMoves = null;
+
+                if (!KingIsChecked(currentTurnColor))
+                {
+                    validMoves = chessPiece.GetValidMoves();
+                }
+                else
+                {
+                    validMoves = chessPiece.GetValidMovesIfKingIsChecked();
+                }
+
                 ShowValidMoves(validMoves);
             }
         }
@@ -251,7 +273,17 @@ namespace chessEasy.Models
 
                     if (currentChessPiece.MoveResolvesCheck(currentTurnColor, new Point(destinationX, destinationY)))
                     {
-                        List<Point> validMoves = currentChessPiece.GetValidMoves();
+                        //List<Point> validMoves = currentChessPiece.GetValidMoves();
+                        List<Point> validMoves = null;
+
+                        if (!KingIsChecked(currentTurnColor))
+                        {
+                            validMoves = currentChessPiece.GetValidMoves();
+                        }
+                        else
+                        {
+                            validMoves = currentChessPiece.GetValidMovesIfKingIsChecked();
+                        }
 
                         if (validMoves.Where(point => point.X == destinationX && point.Y == destinationY).Any())
                         {
@@ -274,7 +306,19 @@ namespace chessEasy.Models
                         else
                         {
                             ColorTile(highlighted);
-                            List<Point> highlightedValidMoves = currentChessPiece.GetValidMoves();
+
+                            List<Point> highlightedValidMoves = null;
+
+                            if (!KingIsChecked(currentTurnColor))
+                            {
+                                highlightedValidMoves = currentChessPiece.GetValidMoves();
+                            }
+                            else
+                            {
+                                highlightedValidMoves = currentChessPiece.GetValidMovesIfKingIsChecked();
+                            }
+
+                            //List <Point> highlightedValidMoves = currentChessPiece.GetValidMoves();
                             UnshowValidMoves(highlightedValidMoves);
                             mainWindow.UnregisterName(highlighted.Name);
                         }
@@ -282,7 +326,18 @@ namespace chessEasy.Models
                     else
                     {
                         ColorTile(highlighted);
-                        List<Point> highlightedValidMoves = currentChessPiece.GetValidMoves();
+
+                        List<Point> highlightedValidMoves = null;
+
+                        if (!KingIsChecked(currentTurnColor))
+                        {
+                            highlightedValidMoves = currentChessPiece.GetValidMoves();
+                        }
+                        else
+                        {
+                            highlightedValidMoves = currentChessPiece.GetValidMovesIfKingIsChecked();
+                        }
+                        //List<Point> highlightedValidMoves = currentChessPiece.GetValidMoves();
                         UnshowValidMoves(highlightedValidMoves);
                         mainWindow.UnregisterName(highlighted.Name);
                     }

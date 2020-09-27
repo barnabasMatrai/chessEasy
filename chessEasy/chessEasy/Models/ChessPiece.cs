@@ -20,6 +20,7 @@ namespace chessEasy.Models
         }
 
         public abstract List<Point> GetValidMoves();
+        public abstract List<Point> GetValidMovesIfKingIsChecked();
         protected abstract List<Point> RemoveInvalidMoves(List<Point> validMoves);
 
         public bool MoveResolvesCheck(Color color, Point move)
