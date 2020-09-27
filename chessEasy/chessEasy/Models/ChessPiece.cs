@@ -57,55 +57,6 @@ namespace chessEasy.Models
             return moveResolvesCheck;
         }
 
-        //protected King GetKing(Color color)
-        //{
-        //    ChessPiece[,] board = ChessBoard.GetBoard;
-        //    King king = null;
-
-        //    for (int i = 0; i < board.GetLength(0); i++)
-        //    {
-        //        for (int j = 0; j < board.GetLength(1); j++)
-        //        {
-        //            ChessPiece chessPiece = board[i, j];
-
-        //            if (chessPiece != null)
-        //            {
-        //                if (chessPiece.GetType().Name == "King" && chessPiece.GetColor == color)
-        //                {
-        //                    king = (King)chessPiece;
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    return king;
-        //}
-
-        //public bool KingIsChecked(Color color)
-        //{
-        //    ChessPiece[,] board = ChessBoard.GetBoard;
-        //    King king = GetKing(color);
-        //    Point kingCoordinates = king.GetCoordinates;
-
-        //    for (int i = 0; i < board.GetLength(0); i++)
-        //    {
-        //        for (int j = 0; j < board.GetLength(1); j++)
-        //        {
-        //            ChessPiece chessPiece = board[i, j];
-
-        //            if (chessPiece != null)
-        //            {
-        //                if (chessPiece.GetValidMoves().Contains(kingCoordinates))
-        //                {
-        //                    return true;
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    return false;
-        //}
-
         public Uri GetImagePath
         {
             get { return this.ImagePath; }

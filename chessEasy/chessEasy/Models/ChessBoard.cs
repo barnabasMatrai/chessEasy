@@ -182,7 +182,6 @@ namespace chessEasy.Models
             {
                 ChessPiece highlightedChessPiece = GetBoard[Grid.GetRow(highlighted), Grid.GetColumn(highlighted)];
 
-                //List<Point> highlightedValidMoves = highlightedChessPiece.GetValidMoves();
                 List<Point> highlightedValidMoves = null;
 
                 if (!KingIsChecked(currentTurnColor))
@@ -205,8 +204,6 @@ namespace chessEasy.Models
                 border.Name = "highlighted";
                 mainWindow.RegisterName(border.Name, border);
                 border.Background = Brushes.Yellow;
-
-                //List<Point> validMoves = chessPiece.GetValidMoves();
 
                 List<Point> validMoves = null;
 
@@ -273,7 +270,6 @@ namespace chessEasy.Models
 
                     if (currentChessPiece.MoveResolvesCheck(currentTurnColor, new Point(destinationX, destinationY)))
                     {
-                        //List<Point> validMoves = currentChessPiece.GetValidMoves();
                         List<Point> validMoves = null;
 
                         if (!KingIsChecked(currentTurnColor))
@@ -322,7 +318,6 @@ namespace chessEasy.Models
                                 highlightedValidMoves = currentChessPiece.GetValidMovesIfKingIsChecked();
                             }
 
-                            //List <Point> highlightedValidMoves = currentChessPiece.GetValidMoves();
                             UnshowValidMoves(highlightedValidMoves);
                             mainWindow.UnregisterName(highlighted.Name);
                         }
@@ -341,7 +336,6 @@ namespace chessEasy.Models
                         {
                             highlightedValidMoves = currentChessPiece.GetValidMovesIfKingIsChecked();
                         }
-                        //List<Point> highlightedValidMoves = currentChessPiece.GetValidMoves();
                         UnshowValidMoves(highlightedValidMoves);
                         mainWindow.UnregisterName(highlighted.Name);
                     }
@@ -435,40 +429,6 @@ namespace chessEasy.Models
 
             return true;
         }
-
-        //private bool MoveResolvesCheck(Color color, Point origin, Point move)
-        //{
-        //    ChessPiece[,] board = GetBoard;
-
-        //    int originX = (int) origin.X;
-        //    int originY = (int) origin.Y;
-
-        //    int moveX = (int) move.X;
-        //    int moveY = (int) move.Y;
-
-        //    ChessPiece chessPieceAtMove = board[moveX, moveY];
-
-        //    bool moveResolvesCheck = false;
-
-        //    if ((chessPieceAtMove != null && chessPieceAtMove.GetType().Name != "King") || chessPieceAtMove == null)
-        //    {
-        //        board[moveX, moveY] = board[originX, originY];
-        //        board[originX, originY] = null;
-
-        //        board[moveX, moveY].SetCoordinates = move;
-
-        //        if (!KingIsChecked(color))
-        //        {
-        //            moveResolvesCheck = true;
-        //        }
-
-        //        board[originX, originY] = board[moveX, moveY];
-        //        board[moveX, moveY] = chessPieceAtMove;
-
-        //        board[originX, originY].SetCoordinates = origin;
-        //    }
-        //    return moveResolvesCheck;
-        //}
 
         private Image CreateImageFromChessPiece(ChessPiece chessPiece)
         {
