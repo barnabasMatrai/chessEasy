@@ -1,4 +1,5 @@
-﻿using System;
+﻿using chessEasy.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ using System.Windows.Controls;
 
 namespace chessEasy.Models
 {
-    class Rook : ChessPiece
+    class Rook : ChessPiece, ICanMoveCardinally
     {
         public Rook(ChessBoard chessBoard, string imagePath, Point coordinates) : base(chessBoard, imagePath, coordinates)
         {
@@ -17,8 +18,16 @@ namespace chessEasy.Models
 
         public override List<Point> GetValidMoves()
         {
-            ChessPiece[,] board = ChessBoard.GetBoard;
             List<Point> validMoves = new List<Point>();
+            validMoves = GetValidCardinalMoves(validMoves);
+            validMoves = RemoveInvalidMoves(validMoves);
+
+            return validMoves;
+        }
+
+        public List<Point> GetValidCardinalMoves(List<Point> validMoves)
+        {
+            ChessPiece[,] board = ChessBoard.GetBoard;
 
             for (int i = 0; i < board.GetLength(0); i++)
             {
@@ -32,10 +41,9 @@ namespace chessEasy.Models
                 }
             }
 
-            validMoves = RemoveInvalidMoves(validMoves);
-
             return validMoves;
         }
+
         protected override List<Point> RemoveInvalidMoves(List<Point> validMoves)
         {
             ChessPiece[,] board = ChessBoard.GetBoard;
